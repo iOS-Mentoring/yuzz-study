@@ -10,4 +10,7 @@ import UIKit
 final class TypingView: BaseView {
 
 
+    override func configureView() {
+        super.configureView()
+    }
 }
