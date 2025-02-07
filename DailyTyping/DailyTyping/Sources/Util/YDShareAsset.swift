@@ -23,15 +23,4 @@ enum YDShareAsset: String {
     var image: UIImage {
         return UIImage(named: self.rawValue)!
     }
-    
-    case primaryEmphasis = "primary_emphasis"
-    case inversePrimaryEmphasis = "inverse_primary_emphasis"
-    case primaryRed = "primary_red"
-    case gray300 = "gray300"
-    case gray200 = "gray200"
-    case gray100 = "gray100"
-    
-    var color: UIColor {
-        return UIColor(named: self.rawValue)!
-    }
 }
