@@ -6,17 +6,16 @@
 //
 
 import UIKit
-import YDShare
 
 public extension UIColor {
     
-    static let primaryEmphasis: UIColor = YDShareAsset.primaryEmphasis.color
-    static let inversePrimaryEmphasis: UIColor = YDShareAsset.inversePrimaryEmphasis.color
-    static let primaryRed: UIColor = YDShareAsset.primaryRed.color
+    static let primaryEmphasisColor: UIColor = YDShareAsset.primaryEmphasis.color
+    static let inversePrimaryEmphasisColor: UIColor = YDShareAsset.inversePrimaryEmphasis.color
+    static let primaryRedColor: UIColor = YDShareAsset.primaryRed.color
 
-    static let gray300: UIColor = YDShareAsset.gray300.color
-    static let gray200: UIColor = YDShareAsset.gray200.color
-    static let gray100: UIColor = YDShareAsset.gray100.color
+    static let gray300Color: UIColor = YDShareAsset.gray300.color
+    static let gray200Color: UIColor = YDShareAsset.gray200.color
+    static let gray100Color: UIColor = YDShareAsset.gray100.color
 }
 
 public extension CGColor {
