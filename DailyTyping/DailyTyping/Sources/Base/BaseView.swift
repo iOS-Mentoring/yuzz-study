@@ -8,7 +8,7 @@
 import UIKit
 
 class BaseView: UIView {
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureHierarchy()
@@ -16,9 +16,13 @@ class BaseView: UIView {
         configureView()
     }
     
-    override func configureHierarchy() { }
-    override func configureLayout() { }
-    override func configureView() {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configureHierarchy() { }
+    func configureLayout() { }
+    func configureView() {
         backgroundColor = .white
     }
 
