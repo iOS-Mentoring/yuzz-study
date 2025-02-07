@@ -7,8 +7,6 @@
 
 import UIKit
 
-import YDShare
-
 public extension UIFont {
     
     static func pretendard(type: YDFontFamily.PretendardType, size: CGFloat) -> UIFont {

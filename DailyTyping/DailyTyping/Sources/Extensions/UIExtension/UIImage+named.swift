@@ -7,20 +7,18 @@
 
 import UIKit
 
-import YDShare
-
 public extension UIImage {
     
-    static let iconBookmark = YDShareAsset.iconBookmark.image.withRenderingMode(.alwaysOriginal)
-    static let iconBookmarkFill = YDShareAsset.iconBookmarkFill.image.withRenderingMode(.alwaysOriginal)
-    static let iconClose = YDShareAsset.iconClose.image.withRenderingMode(.alwaysOriginal)
-    static let iconDoubleQuotes = YDShareAsset.iconDoubleQuotes.image.withRenderingMode(.alwaysOriginal)
-    static let iconInverseDownload = YDShareAsset.iconInverseDownload.image.withRenderingMode(.alwaysOriginal)
-    static let iconInverseShare = YDShareAsset.iconInverseShare.image.withRenderingMode(.alwaysOriginal)
-    static let iconLink = YDShareAsset.iconLink.image.withRenderingMode(.alwaysOriginal)
-    static let iconHistory = YDShareAsset.iconHistory.image.withRenderingMode(.alwaysOriginal)
-    static let iconLeftArrow = YDShareAsset.iconLeftArrow.image.withRenderingMode(.alwaysOriginal)
+    static let iconBookmarkImage = YDShareAsset.iconBookmark.image.withRenderingMode(.alwaysOriginal)
+    static let iconBookmarkFillImage = YDShareAsset.iconBookmarkFill.image.withRenderingMode(.alwaysOriginal)
+    static let iconCloseImage = YDShareAsset.iconClose.image.withRenderingMode(.alwaysOriginal)
+    static let iconDoubleQuotesImage = YDShareAsset.iconDoubleQuotes.image.withRenderingMode(.alwaysOriginal)
+    static let iconInverseDownloadImage = YDShareAsset.iconInverseDownload.image.withRenderingMode(.alwaysOriginal)
+    static let iconInverseShareImage = YDShareAsset.iconInverseShare.image.withRenderingMode(.alwaysOriginal)
+    static let iconLinkImage = YDShareAsset.iconLink.image.withRenderingMode(.alwaysOriginal)
+    static let iconHistoryImage = YDShareAsset.iconHistory.image.withRenderingMode(.alwaysOriginal)
+    static let iconLeftArrowImage = YDShareAsset.iconLeftArrow.image.withRenderingMode(.alwaysOriginal)
     
-    static let illustHaruHalf = YDShareAsset.illustHaruHalf.image.withRenderingMode(.alwaysOriginal)
-    static let illustHaruWhole = YDShareAsset.illustHaruWhole.image.withRenderingMode(.alwaysOriginal)
+    static let illustHaruHalfImage = YDShareAsset.illustHaruHalf.image.withRenderingMode(.alwaysOriginal)
+    static let illustHaruWholeImage = YDShareAsset.illustHaruWhole.image.withRenderingMode(.alwaysOriginal)
 }
