@@ -7,12 +7,15 @@
 
 import UIKit
 
-class TypingViewController: BaseViewController {
+final class TypingViewController: BaseViewController {
+    private let mainView = TypingView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
 
+    override func loadView() {
+        view = mainView
+    }
 }
