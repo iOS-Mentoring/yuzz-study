@@ -32,7 +32,6 @@ public enum YDFontFamily {
         case Thin
         
         func font(size: CGFloat) -> UIFont {
-            print("Pretendard-\(self.rawValue)")
             return UIFont(name: "Pretendard-\(self.rawValue)", size: size) ?? .systemFont(ofSize: size, weight: .regular)
         }
     }

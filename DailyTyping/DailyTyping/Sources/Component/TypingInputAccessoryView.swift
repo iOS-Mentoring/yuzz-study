@@ -26,7 +26,7 @@ final class TypingInputAccessoryView: BaseView {
     private let authorLabel: UILabel = {
         let label = UILabel()
         label.text = LabelText.author.rawValue
-        label.font = .pretendard(type: .Bold, size: 13)
+        label.font = .pretendard(type: .Regular, size: 11)
         return label
     }()
     
