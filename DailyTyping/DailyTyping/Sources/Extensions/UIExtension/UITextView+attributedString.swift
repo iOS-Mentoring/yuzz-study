@@ -1,5 +1,5 @@
 //
-//  UILabel+attributedString.swift
+//  UITextView+attributedString.swift
 //  DailyTyping
 //
 //  Created by 조유진 on 2/8/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UILabel {
+extension UITextView {
     func setAttributedString(text: String?, lineHeight: CGFloat = 30, charSpacing: Double = -0.03) {
         guard let text = text else { return }
 
@@ -15,7 +15,8 @@ extension UILabel {
         style.maximumLineHeight = lineHeight
         style.minimumLineHeight = lineHeight
         
-        let kernValue = self.font.pointSize * CGFloat(charSpacing)
+        let fontSize = self.font?.pointSize ?? 20
+        let kernValue = fontSize * CGFloat(charSpacing)
 
         let attributes: [NSAttributedString.Key: Any] = [
             .paragraphStyle: style,

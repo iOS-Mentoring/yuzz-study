@@ -14,8 +14,14 @@ final class TypingViewController: BaseViewController {
         super.viewDidLoad()
 
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        mainView.setTextViewFirstResponder()
+    }
 
     override func loadView() {
         view = mainView
     }
+    
 }
