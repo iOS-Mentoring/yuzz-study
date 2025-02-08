@@ -38,6 +38,7 @@ final class TypingView: BaseView {
         addSubview(speedMeasurementView, autoLayout: [.topNext(to: dtNavigationBar, constant: 0), .leadingSafeArea(0), .trailingSafeArea(0), .height(30)])
         addSubview(placeholderTextView, autoLayout: [.topNext(to: speedMeasurementView, constant: 0), .leadingSafeArea(0), .trailingSafeArea(0), .bottomSafeArea(0)])
         addSubview(typingTextView, autoLayout: [.topNext(to: speedMeasurementView, constant: 0), .leadingSafeArea(0), .trailingSafeArea(0), .bottomSafeArea(0)])
+        addSubview(typingInputAccessoryView, autoLayout: [.height(55)])
     }
 
     override func configureView() {
