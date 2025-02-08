@@ -8,7 +8,7 @@
 import UIKit
 
 extension UILabel {
-    func setAttributedString(text: String?, lineHeight: CGFloat, charSpacing: Double = -0.03) {
+    func setAttributedString(text: String?, lineHeight: CGFloat = 30, charSpacing: Double = -0.03) {
         guard let text = text else { return }
 
         let style = NSMutableParagraphStyle()

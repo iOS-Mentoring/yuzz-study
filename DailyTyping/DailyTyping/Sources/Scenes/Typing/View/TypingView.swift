@@ -27,9 +27,12 @@ final class TypingView: BaseView {
     
     private let dtNavigationBar = DTNavigationBar()
     
+    private let speedMeasurementView = SpeedMeasurementView()
+    
     
     override func configureLayout() {
         addSubview(dtNavigationBar, autoLayout: [.leadingSafeArea(0), .topSafeArea(0), .trailingSafeArea(0), .height(60)])
+        addSubview(speedMeasurementView, autoLayout: [.topNext(to: dtNavigationBar, constant: 0), .leadingSafeArea(0), .trailingSafeArea(0), .height(30)])
     }
 
     override func configureView() {
