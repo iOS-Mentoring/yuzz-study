@@ -10,8 +10,9 @@ import UIKit
 final class TypingView: BaseView {
     private let navigationTitleLabel: UILabel = {
         let label = UILabel()
-        let title = "하루필사"
+        let title = TypeLabelText.navigationTitle.rawValue
         label.text = title
+        label.textColor = .primaryEmphasis
         label.font = .nanumMyeongjo(type: .Regular, size: 22)
         return label
     }()
@@ -45,12 +46,17 @@ final class TypingView: BaseView {
         super.configureView()
         
         dtNavigationBar.setNavigationItem(titleLabel: navigationTitleLabel, rightButton: historyButton)
-        placeholderTextView.configureView(textValue: LabelText.typingValue.rawValue)
+        placeholderTextView.configureView(textValue: TypeLabelText.typingValue.rawValue)
         typingTextView.configureView(textValue: "", isPlaceHolder: false)
         typingTextView.inputAccessoryView = typingInputAccessoryView
+        setTextViewFirstResponder()
     }
     
-    func setTextViewFirstResponder() {
+    private func setTextViewFirstResponder() {
         typingTextView.becomeFirstResponder()
+    }
+    
+    func addBorderToTypingInfoView() {
+        typingInputAccessoryView.addBorderToTypingInfoView()
     }
 }

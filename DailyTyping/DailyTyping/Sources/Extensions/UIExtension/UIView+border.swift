@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIView {
+extension CALayer {
     @discardableResult
     func addBorder(to edges: [UIRectEdge], color: UIColor, width: CGFloat) -> [CALayer] {
         let viewFrame = self.frame
@@ -29,9 +29,9 @@ extension UIView {
             default:
                 break
             }
-
-            self.layer.addSublayer(borderLayer)
-            borderLayers.append(borderLayer)
+            
+            borderLayer.backgroundColor = color.cgColor
+            self.addSublayer(borderLayer)
         }
 
         return borderLayers
