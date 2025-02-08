@@ -10,7 +10,7 @@ import UIKit
 final class TypingView: BaseView {
     private let navigationTitleLabel: UILabel = {
         let label = UILabel()
-        let title = TypeLabelText.navigationTitle.rawValue
+        let title = TypingLabelText.navigationTitle.rawValue
         label.text = title
         label.textColor = .primaryEmphasis
         label.font = .nanumMyeongjo(type: .Regular, size: 22)
@@ -46,7 +46,7 @@ final class TypingView: BaseView {
         super.configureView()
         
         dtNavigationBar.setNavigationItem(titleLabel: navigationTitleLabel, rightButton: historyButton)
-        placeholderTextView.configureView(textValue: TypeLabelText.typingValue.rawValue)
+        placeholderTextView.configureView(textValue: TypingLabelText.typingValue.rawValue)
         typingTextView.configureView(textValue: "", isPlaceHolder: false)
         typingTextView.inputAccessoryView = typingInputAccessoryView
         setTextViewFirstResponder()
