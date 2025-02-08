@@ -32,17 +32,18 @@ public enum YDFontFamily {
         case Thin
         
         func font(size: CGFloat) -> UIFont {
-            return UIFont(name: "Pretendard-\(rawValue)", size: size) ?? .systemFont(ofSize: size, weight: .regular)
+            print("Pretendard-\(self.rawValue)")
+            return UIFont(name: "Pretendard-\(self.rawValue)", size: size) ?? .systemFont(ofSize: size, weight: .regular)
         }
     }
     
     public enum NanumMyeongjoType: String {
-        case Regular = ""
-        case Bold
-        case ExtraBold
+        case Regular = "OTF"
+        case Bold = "OTFBold"
+        case ExtraBold = "OTFExtraBold"
         
         func font(size: CGFloat) -> UIFont {
-            return UIFont(name: "NanumMyeongjo\(rawValue)", size: size) ?? .systemFont(ofSize: size, weight: .regular)
+            return UIFont(name: "NanumMyeongjo\(self.rawValue)", size: size) ?? .systemFont(ofSize: size, weight: .regular)
         }
     }
 }
