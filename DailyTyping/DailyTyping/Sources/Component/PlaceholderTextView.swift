@@ -22,6 +22,7 @@ final class PlaceholderTextView: UITextView {
         self.textColor = textColor
         self.backgroundColor = backgroundColor
         self.font = font
+//        setAttributedString(text: text, lineHeight: 30, charSpacing: -0.03)
         textContainerInset = UIEdgeInsets(top: containerInset, left: containerInset, bottom: containerInset, right: containerInset)
         isEditable = !isPlaceHolder
         isSelectable = !isPlaceHolder
