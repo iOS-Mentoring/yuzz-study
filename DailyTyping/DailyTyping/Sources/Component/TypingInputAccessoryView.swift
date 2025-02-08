@@ -18,14 +18,16 @@ final class TypingInputAccessoryView: BaseView {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = LabelText.defaultTitle.rawValue
+        label.text = TypingLabelText.defaultTitle.rawValue
+        label.textColor = .primaryEmphasis
         label.font = .pretendard(type: .Bold, size: 13)
         return label
     }()
     
     private let authorLabel: UILabel = {
         let label = UILabel()
-        label.text = LabelText.author.rawValue
+        label.text = TypingLabelText.author.rawValue
+        label.textColor = .primaryEmphasis
         label.font = .pretendard(type: .Regular, size: 11)
         return label
     }()
@@ -47,6 +49,10 @@ final class TypingInputAccessoryView: BaseView {
     
     override func configureView() {
         backgroundColor = .gray100
-        addBorder(to: [.top], color: .primaryEmphasis, width: 1)
+        layer.addBorder(to: [.top], color: .primaryEmphasis, width: 1)
+    }
+    
+    func addBorderToTypingInfoView() {
+        layer.addBorder(to: [.top], color: .primaryEmphasis, width: 1)
     }
 }

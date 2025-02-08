@@ -21,7 +21,7 @@ final class SpeedMeasurementView: BaseView {
         label.textColor = .inversePrimaryEmphasis
         label.font = .pretendard(type: .Light, size: 13)
         
-        let title = LabelText.wpm.rawValue
+        let title = TypingLabelText.wpm.rawValue
         let value = "0"
        
         let attributedString = NSMutableAttributedString(string: title + " " + value)
