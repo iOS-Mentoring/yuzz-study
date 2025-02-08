@@ -30,12 +30,14 @@ final class TypingView: BaseView {
     private let speedMeasurementView = SpeedMeasurementView()
     private let placeholderTextView = PlaceholderTextView()
     private let typingTextView = PlaceholderTextView()
+    private let typingInputAccessoryView = TypingInputAccessoryView()
     
     
     override func configureLayout() {
         addSubview(dtNavigationBar, autoLayout: [.leadingSafeArea(0), .topSafeArea(0), .trailingSafeArea(0), .height(60)])
         addSubview(speedMeasurementView, autoLayout: [.topNext(to: dtNavigationBar, constant: 0), .leadingSafeArea(0), .trailingSafeArea(0), .height(30)])
         addSubview(placeholderTextView, autoLayout: [.topNext(to: speedMeasurementView, constant: 0), .leadingSafeArea(0), .trailingSafeArea(0), .bottomSafeArea(0)])
+        addSubview(typingTextView, autoLayout: [.topNext(to: speedMeasurementView, constant: 0), .leadingSafeArea(0), .trailingSafeArea(0), .bottomSafeArea(0)])
     }
 
     override func configureView() {
@@ -44,5 +46,6 @@ final class TypingView: BaseView {
         dtNavigationBar.setNavigationItem(titleLabel: navigationTitleLabel, rightButton: historyButton)
         placeholderTextView.configureView(textValue: LabelText.typingValue.rawValue)
         typingTextView.configureView(textValue: "", isPlaceHolder: false)
+        typingTextView.inputAccessoryView = typingInputAccessoryView
     }
 }

@@ -41,12 +41,12 @@ final class TypingInputAccessoryView: BaseView {
     override func configureLayout() {
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(authorLabel)
-        addSubview(stackView, autoLayout: [.leading(20), .top(11), .bottom(12), .trailingEqualLessThan(to: linkButton, constant: 20)])
         addSubview(linkButton, autoLayout: [.trailing(20), .top(11), .bottom(12)])
+        addSubview(stackView, autoLayout: [.leading(20), .top(11), .bottom(12), .trailingEqualLessThan(to: linkButton, constant: 20)])
     }
     
     override func configureView() {
         backgroundColor = .gray100
-        
+        addBorder(to: [.top], color: .primaryEmphasis, width: 1)
     }
 }
