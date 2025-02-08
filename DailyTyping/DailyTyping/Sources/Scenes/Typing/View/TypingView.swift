@@ -48,4 +48,8 @@ final class TypingView: BaseView {
         typingTextView.configureView(textValue: "", isPlaceHolder: false)
         typingTextView.inputAccessoryView = typingInputAccessoryView
     }
+    
+    func setTextViewFirstResponder() {
+        typingTextView.becomeFirstResponder()
+    }
 }
