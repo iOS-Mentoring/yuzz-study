@@ -10,7 +10,7 @@ import UIKit
 final class HistoryViewController: BaseViewController {
     private let mainView = HistoryView()
     private let viewModel: any ViewModelType
-    var coordinator: Coordinator?
+    var coordinator: HistoryCoordinator?
     
     init(viewModel: any ViewModelType) {
         self.viewModel = viewModel
@@ -22,7 +22,7 @@ final class HistoryViewController: BaseViewController {
     }
     
     deinit {
-        
+        coordinator?.removeCoordinator()
     }
     
     override func viewDidLoad() {

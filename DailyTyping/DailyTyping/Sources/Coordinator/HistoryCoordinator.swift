@@ -20,10 +20,11 @@ final class HistoryCoordinator: Coordinator {
         let viewModel = HistoryViewModel()
         let historyVC = HistoryViewController(viewModel: viewModel)
         historyVC.coordinator = self
-        navigationController.pushViewController(historyVC, animated: false)
+        navigationController.pushViewController(historyVC, animated: true)
     }
     
     func removeCoordinator() {
+        print(#function)
         parentCoordinator?.removeChildCoordinator(child: self)
     }
 }

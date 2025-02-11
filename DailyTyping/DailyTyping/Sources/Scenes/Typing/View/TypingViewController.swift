@@ -10,7 +10,7 @@ import UIKit
 final class TypingViewController: BaseViewController {
     private let mainView = TypingView()
     private let viewModel: any ViewModelType
-    var coordinator: Coordinator?
+    var coordinator: MainCoordinator?
     
     init(viewModel: any ViewModelType) {
         self.viewModel = viewModel
@@ -38,8 +38,17 @@ final class TypingViewController: BaseViewController {
     override func bind() {
         guard let viewModel = viewModel as? TypingViewModel else { return }
         let input = TypingViewModel.Input(
-            
+            historyButtonTapped: mainView.historyButton.tapPublisher
         )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.historyButtonTapped
+            .sink { [weak self] _ in
+                guard let self, let coordinator else { return }
+                coordinator.showHistoryVC()
+            }
+            .store(in: &cancellables)
     }
     
     override func configureNavigationItem() {
