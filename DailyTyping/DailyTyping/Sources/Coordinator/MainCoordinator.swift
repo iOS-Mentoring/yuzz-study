@@ -17,6 +17,9 @@ final class MainCoordinator: Coordinator {
     }
     
     func start() {
-    
+        let viewModel = TypingViewModel()
+        let mainVC = TypingViewController(viewModel: viewModel)
+        mainVC.coordinator = self
+        navigationController.pushViewController(mainVC, animated: false)
     }
 }

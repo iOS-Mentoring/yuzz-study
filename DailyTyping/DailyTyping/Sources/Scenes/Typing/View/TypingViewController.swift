@@ -9,7 +9,18 @@ import UIKit
 
 final class TypingViewController: BaseViewController {
     private let mainView = TypingView()
-
+    private let viewModel: any ViewModelType
+    var coordinator: Coordinator?
+    
+    init(viewModel: any ViewModelType) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -25,7 +36,10 @@ final class TypingViewController: BaseViewController {
     
     // MARK: bind()
     override func bind() {
-        
+        guard let viewModel = viewModel as? TypingViewModel else { return }
+        let input = TypingViewModel.Input(
+            
+        )
     }
     
     override func configureNavigationItem() {
