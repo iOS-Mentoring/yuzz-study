@@ -12,7 +12,6 @@ final class TypingViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationItem()
     }
     
     override func loadView() {
@@ -24,12 +23,13 @@ final class TypingViewController: BaseViewController {
         mainView.addBorderToTypingInfoView()
     }
     
+    // MARK: bind()
+    override func bind() {
+        
+    }
+    
     override func configureNavigationItem() {
         navigationItem.titleView = mainView.navigationTitleLabel
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: mainView.historyButton)
     }
-}
-
-extension TypingViewController {
-    
 }
