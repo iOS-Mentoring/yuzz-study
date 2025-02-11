@@ -8,21 +8,23 @@
 import UIKit
 
 extension UILabel {
-    func setAttributedString(text: String?, lineHeight: CGFloat = 30, charSpacing: Double = -0.03) {
-        guard let text = text else { return }
+    func setAttributedString(text: String?, color: UIColor = .primaryEmphasis, font: UIFont? = .pretendard(type: .Light, size: 13), lineHeight: CGFloat = 30, charSpacing: CGFloat = -0.04) {
+        guard let text, let font else { return }
+        
+        let resultText = text.isEmpty ? "\u{200B}" : text
 
         let style = NSMutableParagraphStyle()
         style.maximumLineHeight = lineHeight
         style.minimumLineHeight = lineHeight
-        
-        let kernValue = self.font.pointSize * CGFloat(charSpacing)
 
         let attributes: [NSAttributedString.Key: Any] = [
             .paragraphStyle: style,
-            .kern: kernValue
+            .baselineOffset: (lineHeight - font.lineHeight) / 2,
+            .kern: charSpacing,
+            .font: font
         ]
 
-        let attrString = NSAttributedString(string: text, attributes: attributes)
+        let attrString = NSAttributedString(string: resultText, attributes: attributes)
         self.attributedText = attrString
     }
 }
