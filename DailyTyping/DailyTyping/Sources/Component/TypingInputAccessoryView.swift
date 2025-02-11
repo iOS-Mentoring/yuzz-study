@@ -18,17 +18,25 @@ final class TypingInputAccessoryView: BaseView {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = TypingLabelText.defaultTitle.rawValue
-        label.textColor = .primaryEmphasis
-        label.font = .pretendard(type: .Bold, size: 13)
+        let title = TypingLabelText.defaultTitle.rawValue
+        label.text = title
+        label.setAttributedString(
+            text: title,
+            font: .pretendard(type: .Bold, size: 13),
+            lineHeight: 16
+        )
         return label
     }()
     
     private let authorLabel: UILabel = {
         let label = UILabel()
-        label.text = TypingLabelText.author.rawValue
-        label.textColor = .primaryEmphasis
-        label.font = .pretendard(type: .Regular, size: 11)
+        let title = TypingLabelText.author.rawValue
+        label.text = title
+        label.setAttributedString(
+            text: title,
+            font: .pretendard(type: .Regular, size: 11),
+            lineHeight: 14
+        )
         return label
     }()
     
