@@ -8,7 +8,7 @@
 import UIKit
 
 final class HistoryViewController: BaseViewController {
-    private let mainView = HistoryView()
+    private let mainView = HistoryView()
     private let viewModel: any ViewModelType
     var coordinator: Coordinator?
     
@@ -19,6 +19,10 @@ final class HistoryViewController: BaseViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        
     }
     
     override func viewDidLoad() {
