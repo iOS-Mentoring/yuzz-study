@@ -19,10 +19,9 @@ final class PlaceholderTextView: UITextView {
     
     func configureView(textValue: String = TypingLabelText.typingValue.rawValue, color textColor: UIColor? = UIColor.gray300, backgroundColor: UIColor? = UIColor.gray100, font: UIFont? = UIFont.pretendard(type: .Regular, size: 20), isPlaceHolder: Bool = true, containerInset: Double = 20) {
         self.text = textValue
-        self.textColor = textColor
         self.backgroundColor = isPlaceHolder ? backgroundColor : .clear
         self.font = font
-//        setAttributedString(text: text, lineHeight: 30, charSpacing: -0.03)
+        isPlaceHolder ? setAttributedString(text: text) : setAttributedString(text: text, color: .primaryEmphasis)
         textContainerInset = UIEdgeInsets(top: containerInset, left: containerInset, bottom: containerInset, right: containerInset)
         isEditable = !isPlaceHolder
         isSelectable = !isPlaceHolder

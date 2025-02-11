@@ -12,8 +12,13 @@ final class TypingView: BaseView {
         let label = UILabel()
         let title = TypingLabelText.navigationTitle.rawValue
         label.text = title
-        label.textColor = .primaryEmphasis
-        label.font = .nanumMyeongjo(type: .Regular, size: 22)
+        label.setAttributedString(
+            text: title,
+            color: .primaryEmphasis,
+            font: .nanumMyeongjo(type: .Regular, size: 22),
+            lineHeight: 27,
+            charSpacing: -0.02
+        )
         return label
     }()
     
