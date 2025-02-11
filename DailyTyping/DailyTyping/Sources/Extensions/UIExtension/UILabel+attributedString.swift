@@ -21,7 +21,8 @@ extension UILabel {
             .paragraphStyle: style,
             .baselineOffset: (lineHeight - font.lineHeight) / 2,
             .kern: charSpacing,
-            .font: font
+            .font: font,
+            .foregroundColor: color
         ]
 
         let attrString = NSAttributedString(string: resultText, attributes: attributes)

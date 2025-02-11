@@ -35,11 +35,13 @@ final class SpeedMeasurementView: BaseView {
         let label = UILabel()
         let title = "00:00:00"
         label.text = title
-        label.textColor = .inversePrimaryEmphasis
-        label.font = .pretendard(type: .Regular, size: 13)
-        label.textAlignment = .right
         label.font = UIFont.monospacedDigitSystemFont(ofSize: 13, weight: .regular)
-//        label.setAttributedString(text: title, charSpacing: -0.03)
+        label.setAttributedString(
+            text: title,
+            color: .inversePrimaryEmphasis,
+            font: UIFont.monospacedDigitSystemFont(ofSize: 13, weight: .regular),
+            charSpacing: -0.03
+        )
        
         return label
     }()
