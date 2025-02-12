@@ -40,7 +40,7 @@ final class TypingInputAccessoryView: BaseView {
         return label
     }()
     
-    private let linkButton: UIButton = {
+    let linkButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
         configuration.image = .iconLink.resized(to: CGSize(width: 24, height: 24))

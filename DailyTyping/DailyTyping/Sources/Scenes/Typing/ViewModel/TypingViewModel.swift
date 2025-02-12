@@ -12,16 +12,24 @@ final class TypingViewModel: ViewModelType{
     
     struct Input {
         let historyButtonTapped: AnyPublisher<Void, Never>
+        let linkButtonTapped: AnyPublisher<Void, Never>
     }
     
     struct Output {
         let historyButtonTapped: AnyPublisher<Void, Never>
+        let linkButtonTapped: AnyPublisher<Void, Never>
     }
     
     func transform(input: Input) -> Output {
         let historyButtonTapped = input.historyButtonTapped
             .eraseToAnyPublisher()
         
-        return Output(historyButtonTapped: historyButtonTapped)
+        let linkButtonTapped = input.linkButtonTapped
+            .eraseToAnyPublisher()
+        
+        return Output(
+            historyButtonTapped: historyButtonTapped,
+            linkButtonTapped: linkButtonTapped
+        )
     }
 }

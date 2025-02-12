@@ -34,7 +34,7 @@ final class TypingView: BaseView {
     private let speedMeasurementView = SpeedMeasurementView()
     private let placeholderTextView = PlaceholderTextView()
     private let typingTextView = PlaceholderTextView()
-    private let typingInputAccessoryView = TypingInputAccessoryView()
+    let typingInputAccessoryView = TypingInputAccessoryView()
     
     
     override func configureLayout() {
