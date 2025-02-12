@@ -8,9 +8,9 @@
 import UIKit
 
 final class SpeedMeasurementView: BaseView {
-    private let gageView: UIView = {
+    private let progressView: UIView = {
        let view = UIView()
-        view.backgroundColor = .primaryRed
+        view.backgroundColor = .clear
         
         return view
     }()
@@ -48,7 +48,7 @@ final class SpeedMeasurementView: BaseView {
 
     
     override func configureLayout() {
-        addSubview(gageView, autoLayout: [.leading(0), .top(0), .bottom(0), .trailingLessThan(40), .widthLessThan(80), .height(30)])
+        addSubview(progressView, autoLayout: [.leading(0), .top(0), .bottom(0), .trailing(0), .height(30)])
         addSubview(wpmLabel, autoLayout: [.leading(20), .centerY(0)])
         addSubview(progressTimeLabel, autoLayout: [.trailing(20), .centerY(0)])
     }
@@ -64,5 +64,9 @@ final class SpeedMeasurementView: BaseView {
     func getSecondText(second: Int) -> String {
         let resultSecond = String.getFormattedTwoDigit(number: second)
         return second != 60 ? "00:00:\(resultSecond)" : "00:01:00"
+    }
+    
+    func startProgressView() {
+        progressView.backgroundColor = .primaryRed
     }
 }

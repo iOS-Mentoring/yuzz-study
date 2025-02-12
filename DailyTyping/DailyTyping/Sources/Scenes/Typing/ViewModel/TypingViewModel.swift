@@ -21,6 +21,7 @@ final class TypingViewModel: ViewModelType{
     struct Output {
         let historyButtonTapped: AnyPublisher<Void, Never>
         let linkButtonTapped: AnyPublisher<Void, Never>
+        let typingStarted: AnyPublisher<Void, Never>
         let elapsedTime: AnyPublisher<Int, Never>
     }
     
@@ -39,12 +40,13 @@ final class TypingViewModel: ViewModelType{
         // 처음으로 빈 문자열이 아닌 값이 입력되었을 때 이벤트 방출
         let typingStart = input.textViewDidChanged
             .filter { !$0.isEmpty }
+            .map { _ in return () }
             .prefix(1)  // 처음 방출 이후 스트림 완료 -> 더 이상 구독 X
             .eraseToAnyPublisher()
         
-        var elapsedTimePublisher = PassthroughSubject<Int, Never>()
+        let elapsedTimePublisher = PassthroughSubject<Int, Never>()
         
-        typingStart.sink { [weak self] text in  // 타이핑 시작됐을 때
+        typingStart.sink { [weak self] _ in  // 타이핑 시작됐을 때
             guard let self else { return }
             let timerPublisher = timeProvider.timerPublisher(every: 1.0, endSeconds: 60)    // 타이머 시작
             
@@ -65,6 +67,7 @@ final class TypingViewModel: ViewModelType{
         return Output(
             historyButtonTapped: historyButtonTapped,
             linkButtonTapped: linkButtonTapped,
+            typingStarted: typingStart,
             elapsedTime: elapsedTimePublisher.eraseToAnyPublisher()
         )
     }

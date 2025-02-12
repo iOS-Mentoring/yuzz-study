@@ -64,6 +64,13 @@ final class TypingViewController: BaseViewController {
             }
             .store(in: &cancellables)
         
+        output.typingStarted
+            .sink { [weak self] _ in
+                guard let self else { return }
+                mainView.startProgressView()
+            }
+            .store(in: &cancellables)
+        
         output.elapsedTime
             .sink { [weak self] second in
                 guard let self else { return }
