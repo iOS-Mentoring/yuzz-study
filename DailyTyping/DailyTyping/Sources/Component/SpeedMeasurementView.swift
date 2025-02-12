@@ -69,4 +69,11 @@ final class SpeedMeasurementView: BaseView {
     func startProgressView() {
         progressView.backgroundColor = .primaryRed
     }
+    
+    func setProgressLayout(second: Int) {
+        progressView.updateConstraint(of: .trailing, constant: -second.calculateWidth())
+        UIView.animate(withDuration: 1) {
+            self.layoutIfNeeded()
+        }
+    }
 }

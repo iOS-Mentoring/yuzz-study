@@ -69,4 +69,8 @@ final class TypingView: BaseView {
     func startProgressView() {
         speedMeasurementView.startProgressView()
     }
+    
+    func setProgressLayout(second: Int) {
+        speedMeasurementView.setProgressLayout(second: second)
+    }
 }

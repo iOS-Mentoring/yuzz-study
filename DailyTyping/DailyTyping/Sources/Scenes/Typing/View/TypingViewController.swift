@@ -75,6 +75,7 @@ final class TypingViewController: BaseViewController {
             .sink { [weak self] second in
                 guard let self else { return }
                 mainView.setElapsedTime(second: second)
+                mainView.setProgressLayout(second: second)
             }
             .store(in: &cancellables)
     }
