@@ -33,4 +33,8 @@ extension String {
         
         return matchCount
     }
+    
+    func isSameCountWithPlaceholder() -> Bool {
+        return self.count == TypingLabelText.typingValue.rawValue.count
+    }
 }

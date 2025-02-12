@@ -77,4 +77,8 @@ final class TypingView: BaseView {
     func setWPMValue(wpm: Int) {
         speedMeasurementView.setWPMValue(wpm: wpm)
     }
+    
+    func isEditableTextView(_ isEditable: Bool) {
+        typingTextView.isEditable = isEditable
+    }
 }

@@ -24,6 +24,8 @@ final class TypingViewModel: ViewModelType{
         let typingStarted: AnyPublisher<Void, Never>
         let elapsedTime: AnyPublisher<Int, Never>
         let wpmValue: AnyPublisher<Int, Never>
+        let playTimeFinished: AnyPublisher<Void, Never>
+        let typingFinished: AnyPublisher<Void, Never>
     }
     
     init(timeProvider: TimeProvider) {
@@ -36,7 +38,8 @@ final class TypingViewModel: ViewModelType{
         let textEverySecond = PassthroughSubject<(String, Int), Never>()
         let wpmValue = PassthroughSubject<Int, Never>()
         let currentText = BehaviorSubject<String, Never>("")
-        
+        let playTimeFinished = PassthroughSubject<Void, Never>()
+        let typingFinished = PassthroughSubject<Void, Never>()
         
         let historyButtonTapped = input.historyButtonTapped
             .eraseToAnyPublisher()
@@ -51,8 +54,13 @@ final class TypingViewModel: ViewModelType{
             .prefix(1)  // 처음 방출 이후 스트림 완료 -> 더 이상 구독 X
             .eraseToAnyPublisher()
         
+        
         input.textViewDidChanged.sink { text in // 최근 텍스트 저장
             currentText.send(text)
+            if text.isSameCountWithPlaceholder() {
+                print("끝남!!!!")
+                typingFinished.send(completion: .finished)
+            }
         }
         .store(in: &cancellables)
         
@@ -71,7 +79,7 @@ final class TypingViewModel: ViewModelType{
             timerPublisher.sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished: // 타이머(60초) 끝났을 때
-                    print("60초 끝")
+                    playTimeFinished.send(completion: .finished)
                 }
             }, receiveValue: { seconds in   // 타이머 진행 값
                 elapsedTimePublisher.send(seconds)
@@ -87,7 +95,9 @@ final class TypingViewModel: ViewModelType{
             linkButtonTapped: linkButtonTapped,
             typingStarted: typingStart,
             elapsedTime: elapsedTimePublisher.eraseToAnyPublisher(),
-            wpmValue: wpmValue.eraseToAnyPublisher()
+            wpmValue: wpmValue.eraseToAnyPublisher(),
+            playTimeFinished: playTimeFinished.eraseToAnyPublisher(),
+            typingFinished: typingFinished.eraseToAnyPublisher()
         )
     }
 }
