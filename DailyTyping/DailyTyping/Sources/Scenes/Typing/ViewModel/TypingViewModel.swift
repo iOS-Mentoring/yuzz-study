@@ -6,9 +6,11 @@
 //
 
 import Combine
+import Foundation
 
 final class TypingViewModel: ViewModelType{
     private  var cancellables = Set<AnyCancellable>()
+    private let timeProvider: TimeProvider
     
     struct Input {
         let historyButtonTapped: AnyPublisher<Void, Never>
@@ -19,6 +21,11 @@ final class TypingViewModel: ViewModelType{
     struct Output {
         let historyButtonTapped: AnyPublisher<Void, Never>
         let linkButtonTapped: AnyPublisher<Void, Never>
+    }
+    
+    init(timeProvider: TimeProvider) {
+        print(#function)
+        self.timeProvider = timeProvider
     }
     
     func transform(input: Input) -> Output {
@@ -34,10 +41,22 @@ final class TypingViewModel: ViewModelType{
             .prefix(1)  // 처음 방출 이후 스트림 완료 -> 더 이상 구독 X
             .eraseToAnyPublisher()
         
-        typingStart.sink { text in
-            print(text)
+        typingStart.sink { [weak self] text in  // 타이핑 시작됐을 때
+            guard let self else { return }
+            let timerPublisher = timeProvider.timerPublisher(every: 1.0)    // 타이머 시작
+            
+            timerPublisher.sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished: // 타이머(60초) 끝났을 때
+                    print("60초 끝")
+                }
+            }, receiveValue: { seconds in   // 타이머 진행 값
+                print("경과 \(seconds)초")
+            })
+            .store(in: &cancellables)
         }
         .store(in: &cancellables)
+    
         
         return Output(
             historyButtonTapped: historyButtonTapped,
