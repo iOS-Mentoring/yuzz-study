@@ -17,7 +17,7 @@ final class PlaceholderTextView: UITextView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureView(textValue: String = TypingLabelText.typingValue.rawValue, color textColor: UIColor? = UIColor.gray300, backgroundColor: UIColor? = UIColor.gray100, font: UIFont? = UIFont.pretendard(type: .Regular, size: 20), isPlaceHolder: Bool = true, containerInset: Double = 20) {
+    func configureView(textValue: String? = TypingLabelText.typingValue.rawValue, color textColor: UIColor? = UIColor.gray300, backgroundColor: UIColor? = UIColor.gray100, font: UIFont? = UIFont.pretendard(type: .Regular, size: 20), isPlaceHolder: Bool = true, containerInset: Double = 20) {
         self.text = textValue
         self.backgroundColor = isPlaceHolder ? backgroundColor : .clear
         self.font = font
