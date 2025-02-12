@@ -27,6 +27,9 @@ class LinkWebViewController: BaseViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func loadView() {
+        view = mainView
+    }
 
     override func bind() {
         
