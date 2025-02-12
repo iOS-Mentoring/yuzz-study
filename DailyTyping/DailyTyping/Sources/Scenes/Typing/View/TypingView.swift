@@ -48,7 +48,7 @@ final class TypingView: BaseView {
         super.configureView()
         
         placeholderTextView.configureView(textValue: TypingLabelText.typingValue.rawValue)
-        typingTextView.configureView(textValue: "", isPlaceHolder: false)
+        typingTextView.configureView(textValue: nil, isPlaceHolder: false)
         typingTextView.inputAccessoryView = typingInputAccessoryView
         typingTextView.autocorrectionType = .no
         setTextViewFirstResponder()
@@ -72,5 +72,9 @@ final class TypingView: BaseView {
     
     func setProgressLayout(second: Int) {
         speedMeasurementView.setProgressLayout(second: second)
+    }
+    
+    func setWPMValue(wpm: Int) {
+        speedMeasurementView.setWPMValue(wpm: wpm)
     }
 }

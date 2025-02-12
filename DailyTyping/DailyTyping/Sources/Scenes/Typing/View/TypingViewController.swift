@@ -78,6 +78,14 @@ final class TypingViewController: BaseViewController {
                 mainView.setProgressLayout(second: second)
             }
             .store(in: &cancellables)
+        
+        output.wpmValue
+            .sink { [weak self] wpmValue in
+                guard let self else { return }
+                mainView.setWPMValue(wpm: wpmValue)
+            }
+            .store(in: &cancellables)
+        
     }
     
     override func configureNavigationItem() {

@@ -76,4 +76,17 @@ final class SpeedMeasurementView: BaseView {
             self.layoutIfNeeded()
         }
     }
+    
+    func setWPMValue(wpm: Int) {
+        
+        wpmLabel.textColor = .inversePrimaryEmphasis
+        wpmLabel.font = .pretendard(type: .Light, size: 13)
+        
+        let title = TypingLabelText.wpm.rawValue
+        let value = "\(wpm)"
+       
+        let attributedString = NSMutableAttributedString(string: title + " " + value)
+        attributedString.addAttribute(.font, value: UIFont.pretendard(type: .Bold, size: 13), range: NSRange(location: title.count+1, length: value.count))
+        wpmLabel.attributedText = attributedString
+    }
 }

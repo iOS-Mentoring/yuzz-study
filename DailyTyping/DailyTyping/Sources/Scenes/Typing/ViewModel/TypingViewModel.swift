@@ -23,6 +23,7 @@ final class TypingViewModel: ViewModelType{
         let linkButtonTapped: AnyPublisher<Void, Never>
         let typingStarted: AnyPublisher<Void, Never>
         let elapsedTime: AnyPublisher<Int, Never>
+        let wpmValue: AnyPublisher<Int, Never>
     }
     
     init(timeProvider: TimeProvider) {
@@ -31,6 +32,12 @@ final class TypingViewModel: ViewModelType{
     }
     
     func transform(input: Input) -> Output {
+        let elapsedTimePublisher = PassthroughSubject<Int, Never>()
+        let textEverySecond = PassthroughSubject<(String, Int), Never>()
+        let wpmValue = PassthroughSubject<Int, Never>()
+        let currentText = BehaviorSubject<String, Never>("")
+        
+        
         let historyButtonTapped = input.historyButtonTapped
             .eraseToAnyPublisher()
         
@@ -44,7 +51,18 @@ final class TypingViewModel: ViewModelType{
             .prefix(1)  // 처음 방출 이후 스트림 완료 -> 더 이상 구독 X
             .eraseToAnyPublisher()
         
-        let elapsedTimePublisher = PassthroughSubject<Int, Never>()
+        input.textViewDidChanged.sink { text in // 최근 텍스트 저장
+            currentText.send(text)
+        }
+        .store(in: &cancellables)
+        
+        textEverySecond.sink { (text, second) in
+            let count = text.getMatchHangulCharacterCount()
+            let wpm = second.getWPM(characterCount: count)
+            wpmValue.send(wpm)
+        }
+        .store(in: &cancellables)
+    
         
         typingStart.sink { [weak self] _ in  // 타이핑 시작됐을 때
             guard let self else { return }
@@ -56,8 +74,8 @@ final class TypingViewModel: ViewModelType{
                     print("60초 끝")
                 }
             }, receiveValue: { seconds in   // 타이머 진행 값
-                print("경과 \(seconds)초")
                 elapsedTimePublisher.send(seconds)
+                textEverySecond.send((currentText.value, seconds))
             })
             .store(in: &cancellables)
         }
@@ -68,7 +86,8 @@ final class TypingViewModel: ViewModelType{
             historyButtonTapped: historyButtonTapped,
             linkButtonTapped: linkButtonTapped,
             typingStarted: typingStart,
-            elapsedTime: elapsedTimePublisher.eraseToAnyPublisher()
+            elapsedTime: elapsedTimePublisher.eraseToAnyPublisher(),
+            wpmValue: wpmValue.eraseToAnyPublisher()
         )
     }
 }
