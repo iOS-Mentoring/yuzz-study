@@ -63,6 +63,13 @@ final class TypingViewController: BaseViewController {
                 coordinator.showLinkWebVC()
             }
             .store(in: &cancellables)
+        
+        output.elapsedTime
+            .sink { [weak self] second in
+                guard let self else { return }
+                mainView.setElapsedTime(second: second)
+            }
+            .store(in: &cancellables)
     }
     
     override func configureNavigationItem() {

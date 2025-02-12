@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol TimeProvider {
-    func timerPublisher(every seconds: TimeInterval) -> AnyPublisher<Int, Never>
+    func timerPublisher(every seconds: TimeInterval, endSeconds: Int) -> AnyPublisher<Int, Never>
 }
 
 final class TimerManager: TimeProvider {

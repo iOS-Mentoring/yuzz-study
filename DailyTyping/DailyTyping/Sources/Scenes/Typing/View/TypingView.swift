@@ -61,4 +61,8 @@ final class TypingView: BaseView {
     func addBorderToTypingInfoView() {
         typingInputAccessoryView.addBorderToTypingInfoView()
     }
+    
+    func setElapsedTime(second: Int) {
+        speedMeasurementView.setElapsedTime(second: second)
+    }
 }

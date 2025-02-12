@@ -21,6 +21,7 @@ final class TypingViewModel: ViewModelType{
     struct Output {
         let historyButtonTapped: AnyPublisher<Void, Never>
         let linkButtonTapped: AnyPublisher<Void, Never>
+        let elapsedTime: AnyPublisher<Int, Never>
     }
     
     init(timeProvider: TimeProvider) {
@@ -41,9 +42,11 @@ final class TypingViewModel: ViewModelType{
             .prefix(1)  // 처음 방출 이후 스트림 완료 -> 더 이상 구독 X
             .eraseToAnyPublisher()
         
+        var elapsedTimePublisher = PassthroughSubject<Int, Never>()
+        
         typingStart.sink { [weak self] text in  // 타이핑 시작됐을 때
             guard let self else { return }
-            let timerPublisher = timeProvider.timerPublisher(every: 1.0)    // 타이머 시작
+            let timerPublisher = timeProvider.timerPublisher(every: 1.0, endSeconds: 60)    // 타이머 시작
             
             timerPublisher.sink(receiveCompletion: { completion in
                 switch completion {
@@ -52,6 +55,7 @@ final class TypingViewModel: ViewModelType{
                 }
             }, receiveValue: { seconds in   // 타이머 진행 값
                 print("경과 \(seconds)초")
+                elapsedTimePublisher.send(seconds)
             })
             .store(in: &cancellables)
         }
@@ -60,7 +64,8 @@ final class TypingViewModel: ViewModelType{
         
         return Output(
             historyButtonTapped: historyButtonTapped,
-            linkButtonTapped: linkButtonTapped
+            linkButtonTapped: linkButtonTapped,
+            elapsedTime: elapsedTimePublisher.eraseToAnyPublisher()
         )
     }
 }
