@@ -44,7 +44,8 @@ final class TypingViewController: BaseViewController {
         guard let viewModel = viewModel as? TypingViewModel else { return }
         let input = TypingViewModel.Input(
             historyButtonTapped: mainView.historyButton.tapPublisher,
-            linkButtonTapped: mainView.typingInputAccessoryView.linkButton.tapPublisher
+            linkButtonTapped: mainView.typingInputAccessoryView.linkButton.tapPublisher,
+            textViewDidChanged: mainView.typingTextView.textPublisher
         )
         
         let output = viewModel.transform(input: input)

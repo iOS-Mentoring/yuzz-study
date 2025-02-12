@@ -33,7 +33,7 @@ final class TypingView: BaseView {
     
     private let speedMeasurementView = SpeedMeasurementView()
     private let placeholderTextView = PlaceholderTextView()
-    private let typingTextView = PlaceholderTextView()
+    let typingTextView = PlaceholderTextView()
     let typingInputAccessoryView = TypingInputAccessoryView()
     
     
@@ -50,6 +50,7 @@ final class TypingView: BaseView {
         placeholderTextView.configureView(textValue: TypingLabelText.typingValue.rawValue)
         typingTextView.configureView(textValue: "", isPlaceHolder: false)
         typingTextView.inputAccessoryView = typingInputAccessoryView
+        typingTextView.autocorrectionType = .no
         setTextViewFirstResponder()
     }
     
