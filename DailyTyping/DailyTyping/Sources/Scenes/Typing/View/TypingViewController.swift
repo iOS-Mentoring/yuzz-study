@@ -44,7 +44,8 @@ final class TypingViewController: BaseViewController {
         guard let viewModel = viewModel as? TypingViewModel else { return }
         let input = TypingViewModel.Input(
             historyButtonTapped: mainView.historyButton.tapPublisher,
-            linkButtonTapped: mainView.typingInputAccessoryView.linkButton.tapPublisher
+            linkButtonTapped: mainView.typingInputAccessoryView.linkButton.tapPublisher,
+            textViewDidChanged: mainView.typingTextView.textPublisher
         )
         
         let output = viewModel.transform(input: input)
@@ -60,6 +61,13 @@ final class TypingViewController: BaseViewController {
             .sink { [weak self] in
                 guard let self, let coordinator else { return }
                 coordinator.showLinkWebVC()
+            }
+            .store(in: &cancellables)
+        
+        output.elapsedTime
+            .sink { [weak self] second in
+                guard let self else { return }
+                mainView.setElapsedTime(second: second)
             }
             .store(in: &cancellables)
     }
