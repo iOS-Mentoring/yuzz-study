@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class LinkWebViewController: BaseViewController {
     private let mainView = LinkWebView()
@@ -24,7 +25,6 @@ class LinkWebViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
     
     override func loadView() {
@@ -32,6 +32,16 @@ class LinkWebViewController: BaseViewController {
     }
 
     override func bind() {
+        guard let viewModel = viewModel as? LinkWebViewModel else { return }
+        let input = LinkWebViewModel.Input(viewDidLoadTrigger: Just(()).eraseToAnyPublisher())
         
+        let output = viewModel.transform(input: input)
+        
+        output.viewDidLoad.sink { [weak self] _ in
+            guard let self else { return }
+            print(#function)
+            mainView.loadWebView()
+        }
+        .store(in: &cancellables)
     }
 }
