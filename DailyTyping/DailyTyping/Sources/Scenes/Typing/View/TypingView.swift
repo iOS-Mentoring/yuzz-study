@@ -53,7 +53,7 @@ final class TypingView: BaseView {
         setTextViewFirstResponder()
     }
     
-    private func setTextViewFirstResponder() {
+    func setTextViewFirstResponder() {
         typingTextView.becomeFirstResponder()
     }
     

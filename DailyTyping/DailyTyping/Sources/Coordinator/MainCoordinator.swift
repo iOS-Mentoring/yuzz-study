@@ -22,4 +22,11 @@ final class MainCoordinator: Coordinator {
         mainVC.coordinator = self
         navigationController.pushViewController(mainVC, animated: false)
     }
+    
+    func showHistoryVC() {
+        let historyCoordinator = HistoryCoordinator(navigationController: navigationController)
+        childCoordinators.append(historyCoordinator)
+        historyCoordinator.parentCoordinator = self
+        historyCoordinator.start()
+    }
 }
