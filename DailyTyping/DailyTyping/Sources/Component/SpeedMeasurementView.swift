@@ -57,4 +57,12 @@ final class SpeedMeasurementView: BaseView {
         backgroundColor = .primaryEmphasis
     }
 
+    func setElapsedTime(second: Int) {
+        progressTimeLabel.text = getSecondText(second: second)
+    }
+    
+    func getSecondText(second: Int) -> String {
+        let resultSecond = String.getFormattedTwoDigit(number: second)
+        return second != 60 ? "00:00:\(resultSecond)" : "00:01:00"
+    }
 }
