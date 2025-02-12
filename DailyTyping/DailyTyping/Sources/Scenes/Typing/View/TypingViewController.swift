@@ -43,7 +43,8 @@ final class TypingViewController: BaseViewController {
     override func bind() {
         guard let viewModel = viewModel as? TypingViewModel else { return }
         let input = TypingViewModel.Input(
-            historyButtonTapped: mainView.historyButton.tapPublisher
+            historyButtonTapped: mainView.historyButton.tapPublisher,
+            linkButtonTapped: mainView.typingInputAccessoryView.linkButton.tapPublisher
         )
         
         let output = viewModel.transform(input: input)
@@ -52,6 +53,13 @@ final class TypingViewController: BaseViewController {
             .sink { [weak self] _ in
                 guard let self, let coordinator else { return }
                 coordinator.showHistoryVC()
+            }
+            .store(in: &cancellables)
+        
+        output.linkButtonTapped
+            .sink { [weak self] in
+                guard let self, let coordinator else { return }
+                coordinator.showLinkWebVC()
             }
             .store(in: &cancellables)
     }

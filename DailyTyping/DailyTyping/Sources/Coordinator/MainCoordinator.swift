@@ -29,4 +29,11 @@ final class MainCoordinator: Coordinator {
         historyCoordinator.parentCoordinator = self
         historyCoordinator.start()
     }
+    
+    func showLinkWebVC() {
+        let linkWebCoordinator = LinkWebCoordinator(navigationController: navigationController)
+        childCoordinators.append(linkWebCoordinator)
+        linkWebCoordinator.parentCoordinator = self
+        linkWebCoordinator.start()
+    }
 }
