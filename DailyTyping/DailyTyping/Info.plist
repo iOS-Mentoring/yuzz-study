@@ -4,6 +4,7 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Times New Roman Italic.ttf</string>
 		<string>NanumMyeongjo.otf</string>
 		<string>NanumMyeongjoBold.otf</string>
 		<string>NanumMyeongjoExtraBold.otf</string>
