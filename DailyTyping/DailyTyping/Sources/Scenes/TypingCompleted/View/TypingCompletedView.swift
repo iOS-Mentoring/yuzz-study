@@ -18,11 +18,14 @@ final class TypingCompletedView: BaseView {
     
     private let typingCompletedHeaderView = TypingCompletedHeaderView()
     private let typingResultView = TypingResultView()
+    private let pilsaInfoView = PilsaInfoView()
     
     override func configureLayout() {
         addSubview(typingCompletedHeaderView, autoLayout: [.topSafeArea(40), .leading(0), .trailing(0), .height(140)])
         
         addSubview(typingResultView, autoLayout: [.topNext(to: typingCompletedHeaderView, constant: 40), .leading(20), .trailing(20)])
+        
+        addSubview(pilsaInfoView, autoLayout: [.topNext(to: typingResultView, constant: 40), .leading(20), .trailing(20)])
     }
     
     override func configureView() {
