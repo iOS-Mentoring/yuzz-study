@@ -16,42 +16,24 @@ final class TypingCompletedView: BaseView {
         return button
     }()
     
-    private let completedMessageStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.design()
-        return stackView
-    }()
-    
-    private let goodImageView: UIImageView = {
-        let imageView = UIImageView(image: .illustHaruWhole)
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-    
-    private let goodLabel: UILabel = {
-        let label = UILabel()
-        let title = TypingCompletedLabelText.good.rawValue
-        label.text = title
-        label.setAttributedString(text: title, font: .timesNewRoman(type: .italic, size: 50), lineHeight: 36, charSpacing: -0.05)
-        return label
-    }()
-    
-    private let typingCompletedLabel: UILabel = {
-        let label = UILabel()
-        let title = TypingCompletedLabelText.typingCompleted.rawValue
-        label.text = title
-        label.setAttributedString(text: title, font: .pretendard(type: .Medium, size: 16), lineHeight: 20, charSpacing: -0.03)
-        return label
-    }()
+    private let typingCompletedHeaderView = TypingCompletedHeaderView()
+    private let typingResultView = TypingResultView()
     
     override func configureLayout() {
-        completedMessageStackView.addArrangedSubview(goodLabel)
-        completedMessageStackView.addArrangedSubview(typingCompletedLabel)
-        addSubview(completedMessageStackView, autoLayout: [.topSafeArea(110), .leading(20)])
-        addSubview(goodImageView, autoLayout: [.topSafeArea(52), .trailing(0), .width(110), .height(140)])
+        addSubview(typingCompletedHeaderView, autoLayout: [.topSafeArea(40), .leading(0), .trailing(0), .height(140)])
+        
+        addSubview(typingResultView, autoLayout: [.topNext(to: typingCompletedHeaderView, constant: 40), .leading(20), .trailing(20)])
     }
     
     override func configureView() {
         super.configureView()
+    }
+    
+    func setTypingResultData() {
+        
+    }
+    
+    func setTypingResultViewBorder() {
+        typingResultView.layer.addBorder(to: [.top, .bottom], width: 1)
     }
 }

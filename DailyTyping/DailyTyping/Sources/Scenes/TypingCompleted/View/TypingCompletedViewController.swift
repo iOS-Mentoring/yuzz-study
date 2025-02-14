@@ -29,6 +29,11 @@ final class TypingCompletedViewController: BaseViewController {
         view = mainView
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        mainView.setTypingResultViewBorder()
+    }
+    
     override func configureNavigationItem() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: mainView.closeButton)
     }

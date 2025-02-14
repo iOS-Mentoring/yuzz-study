@@ -8,4 +8,7 @@
 enum TypingCompletedLabelText: String {
     case good = "Good!"
     case typingCompleted = "오늘 필사를 완료했어요"
+    case wpm = "WPM"
+    case acc = "ACC"
+    case date = "Date"
 }
