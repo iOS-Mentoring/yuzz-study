@@ -20,7 +20,7 @@ final class TypingCompletedCoordinator: Coordinator {
         let viewModel = TypingCompletedViewModel()
         let typingCompletedVC = TypingCompletedViewController(viewModel: viewModel)
         typingCompletedVC.coordinator = self
-        navigationController.present(typingCompletedVC, animated: true)
+        navigationController.pushViewController(typingCompletedVC, animated: false)
     }
     
     func removeCoordinator() {

@@ -8,13 +8,12 @@
 import UIKit
 
 final class TypingCompletedView: BaseView {
-    
-    
+   
     override func configureLayout() {
         
     }
     
     override func configureView() {
-        
+        super.configureView()
     }
 }
