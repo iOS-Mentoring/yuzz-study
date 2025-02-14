@@ -11,4 +11,5 @@ enum TypingCompletedLabelText: String {
     case wpm = "WPM"
     case acc = "ACC"
     case date = "Date"
+    case downloadImage = "이미지 저장하기"
 }
