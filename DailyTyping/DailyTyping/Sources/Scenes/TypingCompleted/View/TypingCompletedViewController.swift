@@ -20,9 +20,35 @@ final class TypingCompletedViewController: BaseViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    deinit {
+        coordinator?.removeCoordinator()
+    }
      
     override func bind() {
+        guard let viewModel = viewModel as? TypingCompletedViewModel else { return }
+        let input = TypingCompletedViewModel.Input(
+            closeButtonTapped: mainView.closeButton.tapPublisher,
+            downloadImageButtonTapped: mainView.downloadImageButton.tapPublisher
+        )
         
+        let output = viewModel.transform(input: input)
+        
+        output.closeButtonTapped
+            .sink { [weak self] _ in
+                guard let self else { return }
+                coordinator?.removeCoordinator()
+            }
+            .store(in: &cancellables)
+        
+        output.downloadImageButtonTapped
+            .sink { [weak self] in
+                guard let self else { return }
+                guard let image = mainView.pilsaInfoView.transfromToImage() else { return }
+                let vc = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+                present(vc, animated: true)
+            }
+            .store(in: &cancellables)
     }
     
     override func loadView() {

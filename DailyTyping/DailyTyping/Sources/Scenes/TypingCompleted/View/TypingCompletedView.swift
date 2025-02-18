@@ -18,8 +18,8 @@ final class TypingCompletedView: BaseView {
     
     private let typingCompletedHeaderView = TypingCompletedHeaderView()
     private let typingResultView = TypingResultView()
-    private let pilsaInfoView = PilsaInfoView()
-    private let downloadImageButton: UIButton = {
+    let pilsaInfoView = PilsaInfoView()
+    let downloadImageButton: UIButton = {
         let button = UIButton()
         var configuration = UIButton.Configuration.plain()
         

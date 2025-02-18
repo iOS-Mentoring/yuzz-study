@@ -11,15 +11,25 @@ final class TypingCompletedViewModel: ViewModelType {
     private var cancellables = Set<AnyCancellable>()
     
     struct Input {
-        
+        let closeButtonTapped: AnyPublisher<Void, Never>
+        let downloadImageButtonTapped: AnyPublisher<Void, Never>
     }
     
     struct Output {
-        
+        let closeButtonTapped: AnyPublisher<Void, Never>
+        let downloadImageButtonTapped: AnyPublisher<Void, Never>
     }
     
     func transform(input: Input) -> Output {
+        let closeButtonTapped = input.closeButtonTapped
+            .eraseToAnyPublisher()
         
-        return Output()
+        let downloadImageButtonTapped = input.downloadImageButtonTapped
+            .eraseToAnyPublisher()
+        
+        return Output(
+            closeButtonTapped: closeButtonTapped,
+            downloadImageButtonTapped: downloadImageButtonTapped
+        )
     }
 }
