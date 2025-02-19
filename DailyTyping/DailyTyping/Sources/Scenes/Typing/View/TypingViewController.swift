@@ -68,6 +68,7 @@ final class TypingViewController: BaseViewController {
             .sink { [weak self] _ in
                 guard let self else { return }
                 mainView.startProgressView()
+                mainView.typingTextView.text.removeFirst()
             }
             .store(in: &cancellables)
         

@@ -48,7 +48,7 @@ final class TypingView: BaseView {
         super.configureView()
         
         placeholderTextView.configureView(textValue: TypingLabelText.typingValue.rawValue)
-        typingTextView.configureView(textValue: nil, isPlaceHolder: false)
+        typingTextView.configureView(textValue: "", isPlaceHolder: false)
         typingTextView.inputAccessoryView = typingInputAccessoryView
         typingTextView.autocorrectionType = .no
         setTextViewFirstResponder()
