@@ -30,7 +30,6 @@ final class TypingResultView: BaseView {
     
     private let wpmValueLabel: ResultValueLabel = {
         let label = ResultValueLabel()
-        label.configureView(title: "430")
         return label
     }()
     
@@ -45,7 +44,6 @@ final class TypingResultView: BaseView {
     
     private let accValueLabel: ResultValueLabel = {
         let label = ResultValueLabel()
-        label.configureView(title: "99%")
         return label
     }()
     private lazy var accStackView = createStackView(view1: accLabel, view2: accValueLabel)
@@ -59,7 +57,6 @@ final class TypingResultView: BaseView {
     
     private let dateValueLabel: ResultValueLabel = {
         let label = ResultValueLabel()
-        label.configureView(title: "Jan 28")
         return label
     }()
     private lazy var dateStackView = createStackView(view1: dateLabel, view2: dateValueLabel)
@@ -85,5 +82,14 @@ final class TypingResultView: BaseView {
         stackView.addArrangedSubview(view1)
         stackView.addArrangedSubview(view2)
         return stackView
+    }
+}
+
+extension TypingResultView {
+    func setPerformance(_ performance: PilsaPerformance) {
+        wpmValueLabel.configureView(title: String(performance.wpm))
+        accValueLabel.configureView(title: String(performance.acc) + "%")
+        dateValueLabel.configureView(title: performance.date.toEnglishStyleDay)
+        print(performance.date)
     }
 }

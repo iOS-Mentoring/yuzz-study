@@ -6,14 +6,17 @@
 //
 
 import UIKit
+import Combine
 
 final class TypingCompletedViewController: BaseViewController {
     private let mainView = TypingCompletedView()
     private let viewModel: any ViewModelType
     var coordinator: TypingCompletedCoordinator?
+    private var pilsaTypingResult: PilsaTypingResult
     
-    init(viewModel: any ViewModelType) {
+    init(viewModel: any ViewModelType, pilsaTypingResult: PilsaTypingResult) {
         self.viewModel = viewModel
+        self.pilsaTypingResult = pilsaTypingResult
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -28,11 +31,23 @@ final class TypingCompletedViewController: BaseViewController {
     override func bind() {
         guard let viewModel = viewModel as? TypingCompletedViewModel else { return }
         let input = TypingCompletedViewModel.Input(
+            viewDidLoad: Just(pilsaTypingResult).eraseToAnyPublisher(),
             closeButtonTapped: mainView.closeButton.tapPublisher,
             downloadImageButtonTapped: mainView.downloadImageButton.tapPublisher
         )
         
         let output = viewModel.transform(input: input)
+        
+        output.pilsaTypingResult
+            .sink { [weak self] pilsaTypingResult in
+                guard let self else {
+                    print("TypingCompletedViewController self 없음")
+                    return
+                }
+                print("TypingCompletedViewController에서 받음: \(pilsaTypingResult)")
+                mainView.setPilsaTypingResult(pilsaTypingResult)
+            }
+            .store(in: &cancellables)
         
         output.closeButtonTapped
             .sink { [weak self] _ in
@@ -67,6 +82,7 @@ final class TypingCompletedViewController: BaseViewController {
     }
     
     override func configureNavigationItem() {
+        navigationItem.hidesBackButton = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: mainView.closeButton)
     }
 }

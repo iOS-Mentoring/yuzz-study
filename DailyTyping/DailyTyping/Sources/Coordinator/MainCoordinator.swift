@@ -23,7 +23,11 @@ final class MainCoordinator: Coordinator {
         navigationController.pushViewController(mainVC, animated: false)
     }
     
-    func showTypingCompletedVC() {
+    func showTypingCompletedVC(pilsaTypingResult: PilsaTypingResult) {
+        let typingCompletedCoordinator = TypingCompletedCoordinator(navigationController: navigationController, pilsaTypingResult: pilsaTypingResult)
+        childCoordinators.append(typingCompletedCoordinator)
+        typingCompletedCoordinator.parentCoordinator = self
+        typingCompletedCoordinator.start()
     }
     
     func showHistoryVC() {

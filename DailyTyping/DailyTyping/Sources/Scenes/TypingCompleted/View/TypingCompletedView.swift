@@ -55,8 +55,9 @@ final class TypingCompletedView: BaseView {
         super.configureView()
     }
     
-    func setTypingResultData() {
-        
+    func setPilsaTypingResult(_ pilsaTypingResult: PilsaTypingResult) {
+        typingResultView.setPerformance(pilsaTypingResult.pilsaPerformance)
+        pilsaInfoView.setPilsaInfo(pilsaTypingResult.pilsaInfo)
     }
     
     func setTypingResultViewBorder() {
