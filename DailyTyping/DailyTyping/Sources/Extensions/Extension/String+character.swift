@@ -69,6 +69,7 @@ extension String {
             let range = NSRange(location: index, length: 1)
             
             if index >= pilsaList.count {
+                attributedString.addAttribute(.foregroundColor, value: UIColor.primaryRed, range: range)
                 continue
             }
             

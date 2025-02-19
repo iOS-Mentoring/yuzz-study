@@ -22,6 +22,8 @@ final class TypingViewModel: ViewModelType{
         let playTimeFinished: AnyPublisher<PilsaTypingResult, Never>
         let typingFinished: AnyPublisher<PilsaTypingResult, Never>
         let validateInputText: AnyPublisher<NSAttributedString, Never>
+        
+        let keyboardHeight: AnyPublisher<CGFloat, Never>
     }
 
     init(timeProvider: TimeProvider) {
@@ -37,6 +39,8 @@ final class TypingViewModel: ViewModelType{
         let playTimeFinished = PassthroughSubject<PilsaTypingResult, Never>()
         let typingFinished = PassthroughSubject<PilsaTypingResult, Never>()
         let validateInputText = PassthroughSubject<NSAttributedString, Never>()
+        
+        let keyboardHeightSubject = CurrentValueSubject<CGFloat, Never>(0)
 
         let historyButtonTapped = input.historyButtonTapped
             .eraseToAnyPublisher()
@@ -97,6 +101,14 @@ final class TypingViewModel: ViewModelType{
             .store(in: &cancellables)
         }
         .store(in: &cancellables)
+        
+        
+        // MARK: 키보드 높이 구독
+        CombineKeyboard.shared.visibleHeight
+            .sink { height in
+                keyboardHeightSubject.send(height)
+            }
+            .store(in: &cancellables)
     
         
         return Output(
@@ -107,7 +119,8 @@ final class TypingViewModel: ViewModelType{
             wpmValue: wpmValue.eraseToAnyPublisher(),
             playTimeFinished: playTimeFinished.eraseToAnyPublisher(),
             typingFinished: typingFinished.eraseToAnyPublisher(),
-            validateInputText: validateInputText.eraseToAnyPublisher()
+            validateInputText: validateInputText.eraseToAnyPublisher(),
+            keyboardHeight: keyboardHeightSubject.eraseToAnyPublisher()
         )
     }
 }
