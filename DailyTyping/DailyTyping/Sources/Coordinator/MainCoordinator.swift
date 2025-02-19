@@ -23,6 +23,9 @@ final class MainCoordinator: Coordinator {
         navigationController.pushViewController(mainVC, animated: false)
     }
     
+    func showTypingCompletedVC() {
+    }
+    
     func showHistoryVC() {
         let historyCoordinator = HistoryCoordinator(navigationController: navigationController)
         childCoordinators.append(historyCoordinator)

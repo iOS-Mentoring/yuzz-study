@@ -24,8 +24,8 @@ final class TypingViewModel: ViewModelType{
         let typingStarted: AnyPublisher<Void, Never>
         let elapsedTime: AnyPublisher<Int, Never>
         let wpmValue: AnyPublisher<Int, Never>
-        let playTimeFinished: AnyPublisher<Void, Never>
-        let typingFinished: AnyPublisher<Void, Never>
+        let playTimeFinished: AnyPublisher<PilsaTypingResult, Never>
+        let typingFinished: AnyPublisher<PilsaTypingResult, Never>
         let validateInputText: AnyPublisher<NSAttributedString, Never>
     }
     
@@ -37,10 +37,10 @@ final class TypingViewModel: ViewModelType{
     func transform(input: Input) -> Output {
         let elapsedTimePublisher = PassthroughSubject<Int, Never>()
         let textEverySecond = PassthroughSubject<(String, Int), Never>()
-        let wpmValue = PassthroughSubject<Int, Never>()
+        let wpmValue = CurrentValueSubject<Int, Never>(0)
         let currentText = CurrentValueSubject<String, Never>("")
-        let playTimeFinished = PassthroughSubject<Void, Never>()
-        let typingFinished = PassthroughSubject<Void, Never>()
+        let playTimeFinished = PassthroughSubject<PilsaTypingResult, Never>()
+        let typingFinished = PassthroughSubject<PilsaTypingResult, Never>()
         let validateInputText = PassthroughSubject<NSAttributedString, Never>()
         
         let historyButtonTapped = input.historyButtonTapped
@@ -60,7 +60,7 @@ final class TypingViewModel: ViewModelType{
         input.textViewDidChanged.sink { text in // 최근 텍스트 저장
             currentText.send(text)
             if text.isMatchHangulCharacter() {
-                typingFinished.send(())
+                typingFinished.send((PilsaTypingResult(pilsaPerformance: .init(wpm: wpmValue.value, acc: text.calculateAcc(), date: Date()))))
                 textEverySecond.send(completion: .finished)
                 wpmValue.send(completion: .finished)
                 elapsedTimePublisher.send(completion: .finished)
@@ -84,7 +84,13 @@ final class TypingViewModel: ViewModelType{
             timerPublisher.sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished: // 타이머(60초) 끝났을 때
-                    playTimeFinished.send(())
+                    playTimeFinished.send(PilsaTypingResult(
+                        pilsaPerformance: .init(
+                            wpm: wpmValue.value,
+                            acc: currentText.value.calculateAcc(),
+                            date: Date()
+                        )
+                    ))
                     textEverySecond.send(completion: .finished)
                     wpmValue.send(completion: .finished)
                     elapsedTimePublisher.send(completion: .finished)

@@ -39,6 +39,10 @@ extension String {
         return string.decomposedStringWithCanonicalMapping.unicodeScalars.map { scalar -> Character in Character(scalar) }
     }
     
+    func calculateAcc() -> Double {
+        Double(getMatchHangulCharacterCount()) / Double(getCharacterList(string: TypingLabelText.typingValue.rawValue).count)
+    }
+    
     func validateCharacter() -> NSAttributedString {
         let pilsaList = TypingLabelText.typingValue.rawValue
         let lineHeight = 30.0

@@ -95,7 +95,7 @@ final class TypingViewController: BaseViewController {
             .store(in: &cancellables)
 
         output.typingFinished.merge(with: output.playTimeFinished)
-            .sink { [weak self] _ in
+            .sink { [weak self] pilsaTypingResult in
                 guard let self else { return }
                 mainView.setTypingTextViewIsEditable(false)
             }
