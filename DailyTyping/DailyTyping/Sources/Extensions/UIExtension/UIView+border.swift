@@ -11,7 +11,7 @@ extension CALayer {
     @discardableResult
     func addBorder(to edges: [UIRectEdge], color: UIColor = .primaryEmphasis, width: CGFloat) -> [CALayer] {
         let viewFrame = self.frame
-        var borderLayers = [CALayer]()
+        let borderLayers = [CALayer]()
 
         for edge in edges {
             let borderLayer = CALayer()

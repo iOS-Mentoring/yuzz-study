@@ -9,6 +9,6 @@ import Foundation
 
 struct PilsaPerformance {
     let wpm: Int
-    let acc: Double
+    let acc: Int
     let date: Date
 }

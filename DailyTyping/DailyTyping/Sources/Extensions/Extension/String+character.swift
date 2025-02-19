@@ -39,8 +39,8 @@ extension String {
         return string.decomposedStringWithCanonicalMapping.unicodeScalars.map { scalar -> Character in Character(scalar) }
     }
     
-    func calculateAcc() -> Double {
-        Double(getMatchHangulCharacterCount()) / Double(getCharacterList(string: TypingLabelText.typingValue.rawValue).count)
+    func calculateAcc() -> Int {
+        Int((Double(getMatchHangulCharacterCount()) / Double(getCharacterList(string: TypingLabelText.typingValue.rawValue).count) * 100).rounded())
     }
     
     func validateCharacter() -> NSAttributedString {
