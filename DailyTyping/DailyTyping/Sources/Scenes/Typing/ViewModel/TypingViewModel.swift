@@ -1,13 +1,8 @@
 //
-//  TypingViewModel.swift
-//  DailyTyping
-//
 //  Created by 조유진 on 2/12/25.
 //
-
 import Combine
 import Foundation
-
 final class TypingViewModel: ViewModelType{
     private  var cancellables = Set<AnyCancellable>()
     private let timeProvider: TimeProvider
@@ -28,7 +23,7 @@ final class TypingViewModel: ViewModelType{
         let typingFinished: AnyPublisher<PilsaTypingResult, Never>
         let validateInputText: AnyPublisher<NSAttributedString, Never>
     }
-    
+
     init(timeProvider: TimeProvider) {
         print(#function)
         self.timeProvider = timeProvider
@@ -42,7 +37,7 @@ final class TypingViewModel: ViewModelType{
         let playTimeFinished = PassthroughSubject<PilsaTypingResult, Never>()
         let typingFinished = PassthroughSubject<PilsaTypingResult, Never>()
         let validateInputText = PassthroughSubject<NSAttributedString, Never>()
-        
+
         let historyButtonTapped = input.historyButtonTapped
             .eraseToAnyPublisher()
         
