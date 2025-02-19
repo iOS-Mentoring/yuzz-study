@@ -5,7 +5,7 @@
 //  Created by 조유진 on 2/12/25.
 //
 
-import Foundation
+import UIKit
 
 extension String {
     func getMatchHangulCharacterCount() -> Int {
@@ -37,5 +37,51 @@ extension String {
     
     func getCharacterList(string: String) -> [Character] {
         return string.decomposedStringWithCanonicalMapping.unicodeScalars.map { scalar -> Character in Character(scalar) }
+    }
+    
+    func validateCharacter() -> NSAttributedString {
+        let pilsaList = TypingLabelText.typingValue.rawValue
+        let lineHeight = 30.0
+        let charSpacing = -0.04
+        let textFont: UIFont = .pretendard(type: .Regular, size: 20)
+        
+        let attributedString = NSMutableAttributedString(string: self)
+        let style = NSMutableParagraphStyle()
+        style.maximumLineHeight = lineHeight
+        style.minimumLineHeight = lineHeight
+    
+        let attributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: style,
+            .baselineOffset: (lineHeight - textFont.lineHeight) / 2,
+            .kern: charSpacing,
+            .font: textFont,
+            .foregroundColor: UIColor.black
+        ]
+        
+        attributedString.addAttributes(attributes, range: NSRange(location: 0, length: attributedString.length))
+
+       
+        for (index, inputChar) in getEnumeratedList(self) {
+            let range = NSRange(location: index, length: 1)
+            
+            if index >= pilsaList.count {
+                continue
+            }
+            
+            let pilsaIndex = pilsaList.index(pilsaList.startIndex, offsetBy: index)
+            let targetChar = pilsaList[pilsaIndex]
+            
+            let color: UIColor = inputChar == targetChar ? .primaryEmphasis : .primaryRed
+            attributedString.addAttribute(.foregroundColor, value: color, range: range)
+        }
+        return attributedString
+    }
+    
+    func isSameCountWithPlaceholder() -> Bool {
+        return getEnumeratedList(self).count == getEnumeratedList(TypingLabelText.typingValue.rawValue).count
+    }
+    
+    func getEnumeratedList(_ string: String) -> Array<(offset: Int, element: Character)> {
+        return Array(string.enumerated())
     }
 }

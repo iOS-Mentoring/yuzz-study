@@ -86,6 +86,20 @@ final class TypingViewController: BaseViewController {
                 mainView.setWPMValue(wpm: wpmValue)
             }
             .store(in: &cancellables)
+        
+        output.validateInputText
+            .sink { [weak self] attributedString in
+                guard let self else { return }
+                mainView.setValidAttributedString(attributedString)
+            }
+            .store(in: &cancellables)
+
+        output.typingFinished.merge(with: output.playTimeFinished)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                mainView.setTypingTextViewIsEditable(false)
+            }
+            .store(in: &cancellables)
     }
     
     override func configureNavigationItem() {

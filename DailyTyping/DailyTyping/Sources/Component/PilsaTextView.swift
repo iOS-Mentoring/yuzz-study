@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PlaceholderTextView: UITextView {
+final class PilsaTextView: UITextView {
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -46,5 +46,9 @@ final class PlaceholderTextView: UITextView {
 
         let attrString = NSAttributedString(string: resultText, attributes: attributes)
         attributedText = attrString
+    }
+    
+    func setValidAttributedString(_ attributedString: NSAttributedString) {
+        attributedText = attributedString
     }
 }

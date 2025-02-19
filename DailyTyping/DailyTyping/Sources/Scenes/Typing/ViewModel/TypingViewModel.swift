@@ -26,6 +26,7 @@ final class TypingViewModel: ViewModelType{
         let wpmValue: AnyPublisher<Int, Never>
         let playTimeFinished: AnyPublisher<Void, Never>
         let typingFinished: AnyPublisher<Void, Never>
+        let validateInputText: AnyPublisher<NSAttributedString, Never>
     }
     
     init(timeProvider: TimeProvider) {
@@ -40,6 +41,7 @@ final class TypingViewModel: ViewModelType{
         let currentText = CurrentValueSubject<String, Never>("")
         let playTimeFinished = PassthroughSubject<Void, Never>()
         let typingFinished = PassthroughSubject<Void, Never>()
+        let validateInputText = PassthroughSubject<NSAttributedString, Never>()
         
         let historyButtonTapped = input.historyButtonTapped
             .eraseToAnyPublisher()
@@ -58,10 +60,12 @@ final class TypingViewModel: ViewModelType{
         input.textViewDidChanged.sink { text in // 최근 텍스트 저장
             currentText.send(text)
             if text.isMatchHangulCharacter() {
+                typingFinished.send(())
                 textEverySecond.send(completion: .finished)
                 wpmValue.send(completion: .finished)
                 elapsedTimePublisher.send(completion: .finished)
             }
+            validateInputText.send(text.validateCharacter())
         }
         .store(in: &cancellables)
         
@@ -80,6 +84,7 @@ final class TypingViewModel: ViewModelType{
             timerPublisher.sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished: // 타이머(60초) 끝났을 때
+                    playTimeFinished.send(())
                     textEverySecond.send(completion: .finished)
                     wpmValue.send(completion: .finished)
                     elapsedTimePublisher.send(completion: .finished)
@@ -100,7 +105,8 @@ final class TypingViewModel: ViewModelType{
             elapsedTime: elapsedTimePublisher.eraseToAnyPublisher(),
             wpmValue: wpmValue.eraseToAnyPublisher(),
             playTimeFinished: playTimeFinished.eraseToAnyPublisher(),
-            typingFinished: typingFinished.eraseToAnyPublisher()
+            typingFinished: typingFinished.eraseToAnyPublisher(),
+            validateInputText: validateInputText.eraseToAnyPublisher()
         )
     }
 }
