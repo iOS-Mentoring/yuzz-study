@@ -9,19 +9,8 @@ import Foundation
 
 extension String {
     func getMatchHangulCharacterCount() -> Int {
-        var inputCharList = self.decomposedStringWithCanonicalMapping
-            .unicodeScalars
-            .map { scalar -> Character in
-                return Character(scalar)
-            }
-        
-        inputCharList.removeFirst()
-        
-        let placeholderCharList = TypingLabelText.typingValue.rawValue.decomposedStringWithCanonicalMapping
-            .unicodeScalars
-            .map { scalar -> Character in
-                return Character(scalar)
-            }
+        let inputCharList = getCharacterList(string: self)
+        let placeholderCharList = getCharacterList(string: TypingLabelText.typingValue.rawValue)
         
         var matchCount = 0
         
@@ -34,7 +23,19 @@ extension String {
         return matchCount
     }
     
-    func isSameCountWithPlaceholder() -> Bool {
-        return self.count == TypingLabelText.typingValue.rawValue.count
+    func isMatchHangulCharacter() -> Bool {
+        let inputCharList = getCharacterList(string: self)
+        let placeholderCharList = getCharacterList(string: TypingLabelText.typingValue.rawValue)
+        
+        for i in 0..<placeholderCharList.count {
+            guard let inputCharacter = inputCharList[safe: i], let placeholderCharacter = placeholderCharList[safe: i] else { return false }
+            if inputCharacter != placeholderCharacter { return false }
+        }
+        
+        return true
+    }
+    
+    func getCharacterList(string: String) -> [Character] {
+        return string.decomposedStringWithCanonicalMapping.unicodeScalars.map { scalar -> Character in Character(scalar) }
     }
 }

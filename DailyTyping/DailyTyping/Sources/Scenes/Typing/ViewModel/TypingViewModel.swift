@@ -37,7 +37,7 @@ final class TypingViewModel: ViewModelType{
         let elapsedTimePublisher = PassthroughSubject<Int, Never>()
         let textEverySecond = PassthroughSubject<(String, Int), Never>()
         let wpmValue = PassthroughSubject<Int, Never>()
-        let currentText = BehaviorSubject<String, Never>("")
+        let currentText = CurrentValueSubject<String, Never>("")
         let playTimeFinished = PassthroughSubject<Void, Never>()
         let typingFinished = PassthroughSubject<Void, Never>()
         
@@ -57,9 +57,10 @@ final class TypingViewModel: ViewModelType{
         
         input.textViewDidChanged.sink { text in // 최근 텍스트 저장
             currentText.send(text)
-            if text.isSameCountWithPlaceholder() {
-                print("끝남!!!!")
-                typingFinished.send(completion: .finished)
+            if text.isMatchHangulCharacter() {
+                textEverySecond.send(completion: .finished)
+                wpmValue.send(completion: .finished)
+                elapsedTimePublisher.send(completion: .finished)
             }
         }
         .store(in: &cancellables)
@@ -79,7 +80,9 @@ final class TypingViewModel: ViewModelType{
             timerPublisher.sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished: // 타이머(60초) 끝났을 때
-                    playTimeFinished.send(completion: .finished)
+                    textEverySecond.send(completion: .finished)
+                    wpmValue.send(completion: .finished)
+                    elapsedTimePublisher.send(completion: .finished)
                 }
             }, receiveValue: { seconds in   // 타이머 진행 값
                 elapsedTimePublisher.send(seconds)

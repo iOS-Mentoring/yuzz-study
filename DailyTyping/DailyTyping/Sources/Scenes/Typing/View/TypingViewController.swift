@@ -64,44 +64,25 @@ final class TypingViewController: BaseViewController {
             }
             .store(in: &cancellables)
         
-        let typingStartedSub = output.typingStarted
+        output.typingStarted
             .sink { [weak self] _ in
                 guard let self else { return }
                 mainView.startProgressView()
             }
+            .store(in: &cancellables)
         
-        let elapsedTimeSub = output.elapsedTime
+        output.elapsedTime
             .sink { [weak self] second in
                 guard let self else { return }
                 mainView.setElapsedTime(second: second)
                 mainView.setProgressLayout(second: second)
             }
+            .store(in: &cancellables)
         
-        let wpmValueSub = output.wpmValue
+        output.wpmValue
             .sink { [weak self] wpmValue in
                 guard let self else { return }
                 mainView.setWPMValue(wpm: wpmValue)
-            }
-        
-        output.playTimeFinished
-            .sink { [weak self] _ in
-                guard let self else { return }
-                print("playTimeFinished")
-                cancellables.remove(typingStartedSub)
-                cancellables.remove(elapsedTimeSub)
-                cancellables.remove(wpmValueSub)
-                mainView.isEditableTextView(false)
-            }
-            .store(in: &cancellables)
-        
-        output.typingFinished
-            .sink { [weak self] _ in
-                guard let self else { return }
-                print("typingFinished")
-                cancellables.remove(typingStartedSub)
-                cancellables.remove(elapsedTimeSub)
-                cancellables.remove(wpmValueSub)
-                mainView.isEditableTextView(false)
             }
             .store(in: &cancellables)
     }
