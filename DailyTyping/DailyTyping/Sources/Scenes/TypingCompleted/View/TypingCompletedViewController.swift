@@ -44,7 +44,13 @@ final class TypingCompletedViewController: BaseViewController {
         output.downloadImageButtonTapped
             .sink { [weak self] in
                 guard let self else { return }
-                guard let image = mainView.pilsaInfoView.transfromToImage() else { return }
+                let captureFrame = CGRect(
+                    x: mainView.pilsaInfoView.frame.minX - 20,
+                    y: mainView.pilsaInfoView.frame.minY - 40,
+                    width: UIScreen.width,
+                    height: mainView.pilsaInfoView.frame.height + 80
+                )
+                let image = mainView.captureView(view: mainView, frame: captureFrame)
                 let vc = UIActivityViewController(activityItems: [image], applicationActivities: nil)
                 present(vc, animated: true)
             }

@@ -62,4 +62,11 @@ final class TypingCompletedView: BaseView {
     func setTypingResultViewBorder() {
         typingResultView.layer.addBorder(to: [.top, .bottom], width: 1)
     }
+    
+    func captureView(view: UIView, frame: CGRect) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: frame)
+        return renderer.image { context in
+            view.layer.render(in: context.cgContext)
+        }
+    }
 }
