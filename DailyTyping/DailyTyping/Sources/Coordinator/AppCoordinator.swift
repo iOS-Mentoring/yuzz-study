@@ -17,7 +17,7 @@ final class AppCoordinator: Coordinator {
     }
     
     func start() {
-        let mainCoordinator = TypingCompletedCoordinator(navigationController: navigationController)
+        let mainCoordinator = MainCoordinator(navigationController: navigationController)
         
         mainCoordinator.parentCoordinator = self
         childCoordinators.append(mainCoordinator)

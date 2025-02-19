@@ -1,5 +1,5 @@
 //
-//  Untitled.swift
+//  PilsaTextView.swift
 //  DailyTyping
 //
 //  Created by 조유진 on 2/8/25.
@@ -8,7 +8,7 @@
 import UIKit
 
 final class PilsaTextView: UITextView {
-    
+
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
     }
@@ -31,7 +31,6 @@ final class PilsaTextView: UITextView {
         guard let text, let font else { return }
         
         let resultText = text.isEmpty ? "\u{200B}" : text
-
         let style = NSMutableParagraphStyle()
         style.maximumLineHeight = lineHeight
         style.minimumLineHeight = lineHeight
@@ -43,11 +42,10 @@ final class PilsaTextView: UITextView {
             .font: font,
             .foregroundColor: color
         ]
-
         let attrString = NSAttributedString(string: resultText, attributes: attributes)
         attributedText = attrString
     }
-    
+
     func setValidAttributedString(_ attributedString: NSAttributedString) {
         attributedText = attributedString
     }
