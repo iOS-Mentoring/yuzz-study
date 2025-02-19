@@ -16,6 +16,10 @@ public extension UIFont {
     static func nanumMyeongjo(type: YDFontFamily.NanumMyeongjoType, size: CGFloat) -> UIFont {
         type.font(size: size)
     }
+    
+    static func timesNewRoman(type: YDFontFamily.TimesNewRomanType, size: CGFloat) -> UIFont {
+        type.font(size: size)
+    }
 }
 
 public enum YDFontFamily {
@@ -43,6 +47,14 @@ public enum YDFontFamily {
         
         func font(size: CGFloat) -> UIFont {
             return UIFont(name: "NanumMyeongjo\(self.rawValue)", size: size) ?? .systemFont(ofSize: size, weight: .regular)
+        }
+    }
+    
+    public enum TimesNewRomanType: String {
+        case italic = "ItalicMT"
+        
+        func font(size: CGFloat) -> UIFont {
+            return UIFont(name: "TimesNewRomanPS-\(self.rawValue)", size: size) ?? .systemFont(ofSize: size, weight: .regular)
         }
     }
 }

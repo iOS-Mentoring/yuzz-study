@@ -9,7 +9,7 @@ import UIKit
 
 extension CALayer {
     @discardableResult
-    func addBorder(to edges: [UIRectEdge], color: UIColor, width: CGFloat) -> [CALayer] {
+    func addBorder(to edges: [UIRectEdge], color: UIColor = .primaryEmphasis, width: CGFloat) -> [CALayer] {
         let viewFrame = self.frame
         var borderLayers = [CALayer]()
 
