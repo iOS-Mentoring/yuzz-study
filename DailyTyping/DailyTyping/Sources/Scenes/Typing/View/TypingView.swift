@@ -32,8 +32,8 @@ final class TypingView: BaseView {
     }()
     
     private let speedMeasurementView = SpeedMeasurementView()
-    private let placeholderTextView = PlaceholderTextView()
-    let typingTextView = PlaceholderTextView()
+    private let placeholderTextView = PilsaTextView()
+    let typingTextView = PilsaTextView()
     let typingInputAccessoryView = TypingInputAccessoryView()
     
     
@@ -48,7 +48,7 @@ final class TypingView: BaseView {
         super.configureView()
         
         placeholderTextView.configureView(textValue: TypingLabelText.typingValue.rawValue)
-        typingTextView.configureView(textValue: nil, isPlaceHolder: false)
+        typingTextView.configureView(textValue: "", isPlaceHolder: false)
         typingTextView.inputAccessoryView = typingInputAccessoryView
         typingTextView.autocorrectionType = .no
         setTextViewFirstResponder()
@@ -79,6 +79,14 @@ final class TypingView: BaseView {
     }
     
     func isEditableTextView(_ isEditable: Bool) {
+        typingTextView.isEditable = isEditable
+    }
+    
+    func setValidAttributedString(_ attributedString: NSAttributedString) {
+        typingTextView.setValidAttributedString(attributedString)
+    }
+    
+    func setTypingTextViewIsEditable(_ isEditable: Bool) {
         typingTextView.isEditable = isEditable
     }
 }
