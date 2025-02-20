@@ -69,6 +69,8 @@ final class TypingResultView: BaseView {
         }
     }
     
+    override func configureView() { }
+    
     func createDividorView() -> IntrinsicView {
         let view = IntrinsicView(frame: CGRect(x: 0, y: 0, width: 0.5, height: 35))
         view.myIntrinsicSize = CGSize(width: 0.5, height: 35)

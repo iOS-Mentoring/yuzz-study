@@ -52,4 +52,6 @@ final class TypingCompletedHeaderView: BaseView {
         addSubview(completedMessageStackView, autoLayout: [.top(70), .leading(20)])
         addSubview(goodImageView, autoLayout: [.top(12), .trailing(0), .width(110), .height(140)])
     }
+    
+    override func configureView() { }
 }

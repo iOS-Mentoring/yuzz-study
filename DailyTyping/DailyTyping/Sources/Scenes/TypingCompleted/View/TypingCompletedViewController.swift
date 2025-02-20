@@ -81,8 +81,13 @@ final class TypingCompletedViewController: BaseViewController {
         mainView.setTypingResultViewBorder()
     }
     
+    override func viewDidLayoutSubviews() {
+        mainView.gradientLayer.frame = mainView.gradientView.bounds
+    }
+
     override func configureNavigationItem() {
         navigationItem.hidesBackButton = true
+        navigationController?.navigationBar.backgroundColor = .inversePrimaryEmphasis
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: mainView.closeButton)
     }
 }

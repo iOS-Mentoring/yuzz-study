@@ -16,6 +16,26 @@ final class TypingCompletedView: BaseView {
         return button
     }()
     
+    let gradientView = UIView()
+    let gradientLayer: CAGradientLayer = {
+         let gradient = CAGradientLayer()
+         gradient.type = .axial
+         gradient.colors = [
+             UIColor.white.cgColor,
+             UIColor.white.withAlphaComponent(0).cgColor
+         ]
+         gradient.locations = [0, 1]
+         gradient.startPoint = CGPoint(x: 0.5, y: 0)
+         gradient.endPoint = CGPoint(x: 0.5, y: 1)
+         return gradient
+    }()
+
+    private let backgroundImageView: UIImageView = {
+        let imageView = UIImageView(image: .crumpledWhitePaper)
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
     private let typingCompletedHeaderView = TypingCompletedHeaderView()
     private let typingResultView = TypingResultView()
     let pilsaInfoView = PilsaInfoView()
@@ -41,6 +61,12 @@ final class TypingCompletedView: BaseView {
     }()
     
     override func configureLayout() {
+        addSubview(backgroundImageView, autoLayout: [.topSafeArea(0), .leadingSafeArea(0), .trailingSafeArea(0), .bottom(0)])
+
+        addSubview(gradientView, autoLayout: [.topSafeArea(0), .leadingSafeArea(0), .trailingSafeArea(0), .height(74)])
+
+        gradientView.layer.addSublayer(gradientLayer)
+        
         addSubview(typingCompletedHeaderView, autoLayout: [.topSafeArea(40), .leading(0), .trailing(0), .height(140)])
         
         addSubview(typingResultView, autoLayout: [.topNext(to: typingCompletedHeaderView, constant: 40), .leading(20), .trailing(20)])
