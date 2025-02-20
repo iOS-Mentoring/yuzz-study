@@ -61,6 +61,8 @@ final class PilsaInfoView: BaseView {
         addSubview(typingTextStackView, autoLayout: [.top(0), .leading(0), .trailing(0)])
         addSubview(typingInfoStackView, autoLayout: [.topNext(to: typingTextStackView, constant: 30), .leading(0), .trailingLessThan(0), .bottom(0)])
     }
+    
+    override func configureView() { }
 }
 
 extension PilsaInfoView {
