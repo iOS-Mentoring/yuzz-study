@@ -25,6 +25,7 @@ final class PilsaTextView: UITextView {
         textContainerInset = UIEdgeInsets(top: containerInset, left: containerInset, bottom: containerInset, right: containerInset)
         isEditable = !isPlaceHolder
         isSelectable = !isPlaceHolder
+        isScrollEnabled = true
     }
     
     func setAttributedString(text: String?, color: UIColor = .gray300, lineHeight: CGFloat = 30, charSpacing: CGFloat = -0.04, font: UIFont? = .pretendard(type: .Regular, size: 20)) {

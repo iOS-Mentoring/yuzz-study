@@ -101,6 +101,31 @@ final class TypingViewController: BaseViewController {
                 mainView.setTypingTextViewIsEditable(false)
             }
             .store(in: &cancellables)
+        
+        output.keyboardHeight
+            .receive(on: RunLoop.main)
+            .sink { [weak self] keyboardHeight in
+                guard let self else { return }
+                
+                // textView의 contentInset.bottom을 키보드의 높이만큼 설정
+                mainView.setTextViewContentInset(keyboardHeight: keyboardHeight)
+                mainView.setTextViewAutoScroll()
+            }
+            .store(in: &cancellables)
+        
+        output.keyboardIsHidden
+            .receive(on: RunLoop.main)
+            .sink { [weak self] isHidden in
+                guard let self else { return }
+                mainView.setTextViewIsHiddenInset(isHidden)
+            }
+        
+        mainView.typingTextView.scrollOffsetPublisher
+            .sink { [weak self] offset in
+                guard let self else { return }
+                mainView.scrollPlaceholderTextView(offset: offset)
+            }
+            .store(in: &cancellables)
     }
     
     override func configureNavigationItem() {

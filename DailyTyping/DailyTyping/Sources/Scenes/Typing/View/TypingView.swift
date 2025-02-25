@@ -90,3 +90,44 @@ final class TypingView: BaseView {
         typingTextView.isEditable = isEditable
     }
 }
+
+extension TypingView {
+    func setTextViewContentInset(keyboardHeight: CGFloat) {
+        var inset = typingTextView.contentInset
+        inset.bottom = keyboardHeight
+        [placeholderTextView, typingTextView].forEach { $0.contentInset = inset }
+        [placeholderTextView, typingTextView].forEach { $0.scrollIndicatorInsets = inset }
+    }
+    
+    func setTextViewAutoScroll() {
+        guard let selectedRange = typingTextView.selectedTextRange else { return }
+        
+        let caretRect = typingTextView.caretRect(for: selectedRange.end)
+        
+        let visibleRect = typingTextView.bounds.inset(by: typingTextView.contentInset)
+        
+        let offsetCaretRect = caretRect.offsetBy(
+            dx: -typingTextView.contentOffset.x,
+            dy: -typingTextView.contentOffset.y
+        )
+        
+        if !visibleRect.contains(offsetCaretRect) {
+            DispatchQueue.main.async {
+                self.typingTextView.scrollRectToVisible(caretRect, animated: true)
+            }
+            scrollPlaceholderTextView(offset: typingTextView.contentOffset)
+        }
+    }
+    
+    func scrollPlaceholderTextView(offset: CGPoint) {
+        placeholderTextView.contentOffset = offset
+    }
+    
+    func setTextViewIsHiddenInset(_ isHidden: Bool) {
+        if isHidden {
+            [placeholderTextView, typingTextView].forEach {
+                $0.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+            }
+        }
+    }
+}
