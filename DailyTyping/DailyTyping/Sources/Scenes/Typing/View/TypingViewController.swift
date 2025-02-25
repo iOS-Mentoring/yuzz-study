@@ -112,6 +112,13 @@ final class TypingViewController: BaseViewController {
                 mainView.setTextViewAutoScroll()
             }
             .store(in: &cancellables)
+        
+        mainView.typingTextView.scrollOffsetPublisher
+            .sink { [weak self] offset in
+                guard let self else { return }
+                mainView.scrollPlaceholderTextView(offset: offset)
+            }
+            .store(in: &cancellables)
     }
     
     override func configureNavigationItem() {

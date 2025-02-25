@@ -111,9 +111,15 @@ extension TypingView {
             dy: -typingTextView.contentOffset.y
         )
         
-        guard !visibleRect.contains(offsetCaretRect) else { return }
-        
-        typingTextView.scrollRectToVisible(caretRect, animated: true)
-        placeholderTextView.contentOffset = typingTextView.contentOffset
+        if !visibleRect.contains(offsetCaretRect) {
+            DispatchQueue.main.async {
+                self.typingTextView.scrollRectToVisible(caretRect, animated: true)
+            }
+            scrollPlaceholderTextView(offset: typingTextView.contentOffset)
+        }
+    }
+    
+    func scrollPlaceholderTextView(offset: CGPoint) {
+        placeholderTextView.contentOffset = offset
     }
 }

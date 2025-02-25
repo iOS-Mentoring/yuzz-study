@@ -19,4 +19,8 @@ extension UITextView {
         .eraseToAnyPublisher()
     }
 
+    var scrollOffsetPublisher: AnyPublisher<CGPoint, Never> {
+        publisher(for: \.contentOffset)
+            .eraseToAnyPublisher()
+    }
 }
