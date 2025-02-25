@@ -38,4 +38,9 @@ final class HistoryViewController: BaseViewController {
     override func bind() {
         
     }
+    
+    override func configureNavigationItem() {
+        navigationItem.titleView = mainView.navigationTitleLabel
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: mainView.backButton)
+    }
 }

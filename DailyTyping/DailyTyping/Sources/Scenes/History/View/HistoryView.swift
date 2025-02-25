@@ -8,10 +8,49 @@
 import UIKit
 
 final class HistoryView: BaseView {
+    let navigationTitleLabel: UILabel = {
+        let label = UILabel()
+        let title = HistoryLabelText.navigationTitle.rawValue
+        label.text = title
+        label.setAttributedString(
+            text: title,
+            color: .primaryEmphasis,
+            font: .nanumMyeongjo(type: .Regular, size: 21),
+            lineHeight: 27,
+            charSpacing: -0.02
+        )
+        return label
+    }()
     
+    let backButton: UIButton = {
+        let button = UIButton()
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = .iconLeftArrow.resized(to: CGSize(width: 24, height: 24))
+        button.configuration = configuration
+        
+        return button
+    }()
+    
+    let calendarCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.backgroundColor = .inversePrimaryEmphasis
+        collectionView.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 19, right: 10)
+        return collectionView
+    }()
+    
+    private let historyBackgroundImageView: UIImageView = {
+        let imageView = UIImageView(image: .crumpledWhitePaper)
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .backgroundGray
+        return imageView
+    }()
+    
+    let bottomView = BottomView()
     
     override func configureLayout() {
-        
+        addSubview(historyBackgroundImageView, autoLayout: [.topSafeArea(0), .leading(0), .trailing(0), .bottom(0)])
+        addSubview(calendarCollectionView, autoLayout: [.topSafeArea(0), .leading(0), .trailing(0), .height(94.5)])
+        addSubview(bottomView, autoLayout: [.bottom(0), .leading(0), .trailing(0), .height(200)])
     }
     
     override func configureView() {
