@@ -11,7 +11,7 @@ final class HistoryViewModel: ViewModelType {
     private var cancellables = Set<AnyCancellable>()
     
     struct Input {
-        
+        let viewDidLoad: AnyPublisher<Void, Never>
     }
     
     struct Output {
@@ -19,6 +19,14 @@ final class HistoryViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
+        
+        input.viewDidLoad
+            .sink { _ in
+                
+            }
+            .store(in: &cancellables)
+        
+        
         return Output()
     }
 }

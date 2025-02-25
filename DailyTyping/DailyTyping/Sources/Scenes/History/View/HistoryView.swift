@@ -15,7 +15,7 @@ final class HistoryView: BaseView {
         label.setAttributedString(
             text: title,
             color: .primaryEmphasis,
-            font: .nanumMyeongjo(type: .Regular, size: 21),
+            font: .nanumMyeongjo(type: .Bold, size: 21),
             lineHeight: 27,
             charSpacing: -0.02
         )

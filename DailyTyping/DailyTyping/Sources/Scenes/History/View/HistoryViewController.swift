@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 final class HistoryViewController: BaseViewController {
     private let mainView = HistoryView()
@@ -27,16 +28,17 @@ final class HistoryViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
-    
     
     override func loadView() {
         view = mainView
     }
     
     override func bind() {
-        
+        guard let viewModel = viewModel as? HistoryViewModel else { return }
+        let input = HistoryViewModel.Input(
+            viewDidLoad: Just(()).eraseToAnyPublisher()
+        )
     }
     
     override func configureNavigationItem() {
