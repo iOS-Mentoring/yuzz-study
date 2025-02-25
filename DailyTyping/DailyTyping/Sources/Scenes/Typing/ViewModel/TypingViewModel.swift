@@ -24,6 +24,7 @@ final class TypingViewModel: ViewModelType{
         let validateInputText: AnyPublisher<NSAttributedString, Never>
         
         let keyboardHeight: AnyPublisher<CGFloat, Never>
+        let keyboardIsHidden: AnyPublisher<Bool, Never>
     }
 
     init(timeProvider: TimeProvider) {
@@ -41,6 +42,7 @@ final class TypingViewModel: ViewModelType{
         let validateInputText = PassthroughSubject<NSAttributedString, Never>()
         
         let keyboardHeightSubject = CurrentValueSubject<CGFloat, Never>(0)
+        let keyboardIsHiddenSubject = CurrentValueSubject<Bool, Never>(0)
 
         let historyButtonTapped = input.historyButtonTapped
             .eraseToAnyPublisher()
@@ -109,7 +111,12 @@ final class TypingViewModel: ViewModelType{
                 keyboardHeightSubject.send(height)
             }
             .store(in: &cancellables)
-    
+        
+        CombineKeyboard.shared.isHidden
+            .sink { isHidden in
+                keyboardIsHiddenSubject.send(isHidden)
+            }
+            .store(in: &cancellables)
         
         return Output(
             historyButtonTapped: historyButtonTapped,
@@ -120,7 +127,8 @@ final class TypingViewModel: ViewModelType{
             playTimeFinished: playTimeFinished.eraseToAnyPublisher(),
             typingFinished: typingFinished.eraseToAnyPublisher(),
             validateInputText: validateInputText.eraseToAnyPublisher(),
-            keyboardHeight: keyboardHeightSubject.eraseToAnyPublisher()
+            keyboardHeight: keyboardHeightSubject.eraseToAnyPublisher(),
+            keyboardIsHidden: keyboardIsHiddenSubject.eraseToAnyPublisher()
         )
     }
 }

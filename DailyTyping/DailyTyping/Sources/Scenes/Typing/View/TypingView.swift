@@ -122,4 +122,12 @@ extension TypingView {
     func scrollPlaceholderTextView(offset: CGPoint) {
         placeholderTextView.contentOffset = offset
     }
+    
+    func setTextViewIsHiddenInset(_ isHidden: Bool) {
+        if isHidden {
+            [placeholderTextView, typingTextView].forEach {
+                $0.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+            }
+        }
+    }
 }

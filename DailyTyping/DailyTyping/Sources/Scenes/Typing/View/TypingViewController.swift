@@ -113,6 +113,13 @@ final class TypingViewController: BaseViewController {
             }
             .store(in: &cancellables)
         
+        output.keyboardIsHidden
+            .receive(on: RunLoop.main)
+            .sink { [weak self] isHidden in
+                guard let self else { return }
+                mainView.setTextViewIsHiddenInset(isHidden)
+            }
+        
         mainView.typingTextView.scrollOffsetPublisher
             .sink { [weak self] offset in
                 guard let self else { return }
