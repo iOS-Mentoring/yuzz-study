@@ -36,9 +36,21 @@ final class WeekDayCollectionViewCell: UICollectionViewCell, ViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureCell(day: Date, isCompleted: Bool) {
+        let dayString = String(Calendar.current.component(.day, from: day))
+        print(dayString)
+        dayLabel.configureView(day: dayString)
+        circleView.isHidden = !isCompleted
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        circleView.layer.cornerRadius = circleView.frame.width / 2
+    }
+    
     func configureLayout() {
         addSubview(dayBackgroundView, autoLayout: [.top(0), .leading(0), .trailing(0), .width(30), .height(30)])
-        addSubview(dayLabel, autoLayout: [.topNext(to: dayBackgroundView, constant: 9), .leadingNext(to: dayBackgroundView, constant: 6.5), .trailingEqual(to: dayBackgroundView, constant: 6.5), .bottomEqual(to: dayBackgroundView, constant: -9)])
+        addSubview(dayLabel, autoLayout: [.centerX(0), .top(9), .height(12)])
         addSubview(circleView, autoLayout: [.topNext(to: dayBackgroundView, constant: 5), .centerX(0), .bottomLessThan(2), .width(4), .height(4)])
     }
 }

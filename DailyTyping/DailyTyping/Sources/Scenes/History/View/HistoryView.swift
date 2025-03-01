@@ -35,6 +35,10 @@ final class HistoryView: BaseView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.backgroundColor = .inversePrimaryEmphasis
         collectionView.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 19, right: 10)
+        collectionView.register(WeekCalendarHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeekCalendarHeaderView.identifier)
+        collectionView.register(WeekDayCollectionViewCell.self, forCellWithReuseIdentifier: WeekDayCollectionViewCell.identifier)
+        collectionView.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 4, right: 19)
+        collectionView.isPagingEnabled = true
         return collectionView
     }()
     
@@ -55,5 +59,10 @@ final class HistoryView: BaseView {
     
     override func configureView() {
         super.configureView()
+    }
+    
+    private func createCollectionViewLayout() {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 44, height: 44)
     }
 }

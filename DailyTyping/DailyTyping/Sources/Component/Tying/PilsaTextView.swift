@@ -22,7 +22,7 @@ final class PilsaTextView: UITextView {
         self.backgroundColor = isPlaceHolder ? backgroundColor : .clear
         self.font = font
         isPlaceHolder ? setAttributedString(text: text) : setAttributedString(text: text, color: .primaryEmphasis)
-        textContainerInset = UIEdgeInsets(top: containerInset, left: containerInset, bottom: containerInset, right: containerInset)
+        contentInset = UIEdgeInsets(top: containerInset, left: containerInset, bottom: containerInset, right: containerInset)
         isEditable = !isPlaceHolder
         isSelectable = !isPlaceHolder
         isScrollEnabled = true
