@@ -7,6 +7,10 @@
 
 import UIKit
 
+enum HistorySection: Int {
+    case calendar
+}
+
 final class HistoryView: BaseView {
     let navigationTitleLabel: UILabel = {
         let label = UILabel()
@@ -31,16 +35,7 @@ final class HistoryView: BaseView {
         return button
     }()
     
-    let calendarCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.backgroundColor = .inversePrimaryEmphasis
-        collectionView.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 19, right: 10)
-        collectionView.register(WeekCalendarHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeekCalendarHeaderView.identifier)
-        collectionView.register(WeekDayCollectionViewCell.self, forCellWithReuseIdentifier: WeekDayCollectionViewCell.identifier)
-        collectionView.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 4, right: 19)
-        collectionView.isPagingEnabled = true
-        return collectionView
-    }()
+    lazy var calendarCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollectionViewLayout())
     
     private let historyBackgroundImageView: UIImageView = {
         let imageView = UIImageView(image: .crumpledWhitePaper)
@@ -59,10 +54,57 @@ final class HistoryView: BaseView {
     
     override func configureView() {
         super.configureView()
+        calendarCollectionView.backgroundColor = .inversePrimaryEmphasis
+        calendarCollectionView.register(WeekCalendarHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeekCalendarHeaderView.identifier)
+        calendarCollectionView.register(WeekDayCollectionViewCell.self, forCellWithReuseIdentifier: WeekDayCollectionViewCell.identifier)
+        calendarCollectionView.bounces = false
     }
+}
+
+extension HistoryView {
+    private func createCollectionViewLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, UIListEnvironment -> NSCollectionLayoutSection? in
+            guard let self else { return nil}
+            
+            if let historySection = HistorySection(rawValue: sectionIndex) {
+                let section: NSCollectionLayoutSection
+                
+                switch historySection {
+                case .calendar:
+                    section = calendarLayout()
+                }
+                return section
+            } else {
+                return nil
+            }
+        }
+        
+        return layout
+    }
+ 
+    private func calendarLayout() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .estimated(1.0/7.0),
+            heightDimension: .fractionalHeight(1.0)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(41)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 7)
+        group.interItemSpacing = .flexible(20)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 19)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .groupPaging
+        
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(43.0)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
     
-    private func createCollectionViewLayout() {
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 44, height: 44)
+        section.boundarySupplementaryItems = [sectionHeader]
+        
+        
+        return section
     }
 }

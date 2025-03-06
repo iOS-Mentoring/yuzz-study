@@ -33,13 +33,13 @@ final class HistoryViewController: BaseViewController {
         setDelegate()
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 30, height: 41)
-        layout.minimumInteritemSpacing = 20
-        mainView.calendarCollectionView.collectionViewLayout = layout
-    }
+//    override func viewWillLayoutSubviews() {
+//        super.viewWillLayoutSubviews()
+//        let layout = UICollectionViewFlowLayout()
+//        layout.itemSize = CGSize(width: 30, height: 41)
+//        layout.minimumInteritemSpacing = 20
+//        mainView.calendarCollectionView.collectionViewLayout = layout
+//    }
     
     private func setDelegate() {
         mainView.calendarCollectionView.delegate = self
@@ -95,9 +95,5 @@ extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataS
               ) as? WeekCalendarHeaderView else { return UICollectionReusableView() }
 
         return header
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 23)
     }
 }
