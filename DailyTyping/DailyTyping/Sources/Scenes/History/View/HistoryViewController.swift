@@ -13,6 +13,8 @@ final class HistoryViewController: BaseViewController {
     private let viewModel: any ViewModelType
     var coordinator: HistoryCoordinator?
     
+    private var dataSource: UICollectionViewDiffableDataSource<HistorySection, CalendarPilsaItem>!
+    private typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<WeekCalendarHeaderView>
     var dateList: [Date] = []
     
     init(viewModel: any ViewModelType) {
@@ -30,20 +32,6 @@ final class HistoryViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setDelegate()
-    }
-    
-//    override func viewWillLayoutSubviews() {
-//        super.viewWillLayoutSubviews()
-//        let layout = UICollectionViewFlowLayout()
-//        layout.itemSize = CGSize(width: 30, height: 41)
-//        layout.minimumInteritemSpacing = 20
-//        mainView.calendarCollectionView.collectionViewLayout = layout
-//    }
-    
-    private func setDelegate() {
-        mainView.calendarCollectionView.delegate = self
-        mainView.calendarCollectionView.dataSource = self
     }
     
     override func loadView() {
@@ -58,42 +46,55 @@ final class HistoryViewController: BaseViewController {
         
         let output = viewModel.transform(input: input)
         
-        let calendarManager = CalendarManager()
-        dateList = calendarManager.getCurrentWeekDates()
-        mainView.calendarCollectionView.reloadData()
+        output.configureDataSource
+            .sink { [weak self] _ in
+                guard let self else { return }
+                configureDataSource()
+                configureSupplementaryViewDataSource()
+            }
+            .store(in: &cancellables)
+        
+        output.calendarItemPublisher
+            .sink { [weak self] items in
+                guard let self else { return }
+                applySnapshot(items: items)
+            }
+            .store(in: &cancellables)
     }
     
     override func configureNavigationItem() {
+        navigationController?.navigationBar.backgroundColor = .inversePrimaryEmphasis
         navigationItem.titleView = mainView.navigationTitleLabel
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: mainView.backButton)
     }
 }
 
-extension HistoryViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dateList.count
+extension HistoryViewController {
+    private func configureDataSource() {
+        dataSource = UICollectionViewDiffableDataSource(collectionView: mainView.calendarCollectionView, cellProvider: { collectionView, indexPath, item in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeekDayCollectionViewCell.identifier, for: indexPath) as? WeekDayCollectionViewCell else { return UICollectionViewCell() }
+            cell.configureCell(calendarPilsaItem: item)
+            return cell
+        })
+        
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeekDayCollectionViewCell.identifier, for: indexPath) as? WeekDayCollectionViewCell else {
-            return UICollectionViewCell()
+    private func configureSupplementaryViewDataSource() {
+        dataSource.supplementaryViewProvider = {collectionView, kind, indexPath in
+            switch kind {
+            case UICollectionView.elementKindSectionHeader:
+                guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeekCalendarHeaderView.identifier, for: indexPath) as? WeekCalendarHeaderView else { return UICollectionReusableView() }
+                return header
+            default:
+                return UICollectionReusableView()
+            }
         }
-        
-        let data = dateList[indexPath.item]
-        cell.configureCell(day: data, isCompleted: true)
-        
-        
-        return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard kind == UICollectionView.elementKindSectionHeader, // 헤더일때
-              let header = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: WeekCalendarHeaderView.identifier,
-                for: indexPath
-              ) as? WeekCalendarHeaderView else { return UICollectionReusableView() }
-
-        return header
+    private func applySnapshot(items: [CalendarPilsaItem], animatingDifferences: Bool = true) {
+        var snapshot = NSDiffableDataSourceSnapshot<HistorySection, CalendarPilsaItem>()
+        snapshot.appendSections([.calendar])
+        snapshot.appendItems(items, toSection: .calendar)
+        dataSource.apply(snapshot, animatingDifferences: animatingDifferences)
     }
 }

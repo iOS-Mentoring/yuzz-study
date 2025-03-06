@@ -104,7 +104,6 @@ extension HistoryView {
     
         section.boundarySupplementaryItems = [sectionHeader]
         
-        
         return section
     }
 }

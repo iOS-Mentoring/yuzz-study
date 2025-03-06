@@ -36,11 +36,11 @@ final class WeekDayCollectionViewCell: UICollectionViewCell, ViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(day: Date, isCompleted: Bool) {
-        let dayString = String(Calendar.current.component(.day, from: day))
+    func configureCell(calendarPilsaItem: CalendarPilsaItem) {
+        let dayString = String(Calendar.current.component(.day, from: calendarPilsaItem.day))
         print(dayString)
         dayLabel.configureView(day: dayString)
-        circleView.isHidden = !isCompleted
+        circleView.isHidden = !calendarPilsaItem.isCompleted
     }
     
     override func draw(_ rect: CGRect) {

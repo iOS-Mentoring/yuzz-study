@@ -15,18 +15,28 @@ final class HistoryViewModel: ViewModelType {
     }
     
     struct Output {
-        
+        let configureDataSource: AnyPublisher<Void, Never>
+        let calendarItemPublisher: AnyPublisher<[CalendarPilsaItem], Never>
     }
     
     func transform(input: Input) -> Output {
+        let calendarItemsSubject = CurrentValueSubject<[CalendarPilsaItem], Never>([])
         
-        input.viewDidLoad
-            .sink { _ in
-                
+        input.viewDidLoad.sink { [weak self] in
+            guard let self else { return }
+            
+            let calendarManager = CalendarManager()
+            var items: [CalendarPilsaItem] = []
+            for date in calendarManager.getCurrentWeekDates() {
+                items.append(CalendarPilsaItem(day: date, isCompleted: true))
             }
-            .store(in: &cancellables)
+            calendarItemsSubject.send(items)
+        }
+        .store(in: &cancellables)
         
-        
-        return Output()
+        return Output(
+            configureDataSource: input.viewDidLoad.eraseToAnyPublisher(),
+            calendarItemPublisher: calendarItemsSubject.eraseToAnyPublisher()
+        )
     }
 }

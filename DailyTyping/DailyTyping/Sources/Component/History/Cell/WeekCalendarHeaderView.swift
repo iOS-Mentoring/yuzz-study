@@ -29,7 +29,7 @@ final class WeekCalendarHeaderView: UICollectionReusableView, ViewProtocol {
             let label = self.createDayOfTheWeekLabel(dayOfTheWeek: $0)
             dayStackView.addArrangedSubview(label)
         }
-        addSubview(dayStackView, autoLayout: [.leading(20), .trailing(19), .top(20), .bottom(11), .height(43)])
+        addSubview(dayStackView, autoLayout: [.leading(20), .trailing(19), .top(20), .bottom(11)])
     }
     
     func createDayOfTheWeekLabel(dayOfTheWeek: DayOfTheWeek) -> DayOfTheWeekLabel {
