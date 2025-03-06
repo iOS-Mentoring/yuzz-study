@@ -42,7 +42,7 @@ final class TypingViewModel: ViewModelType{
         let validateInputText = PassthroughSubject<NSAttributedString, Never>()
         
         let keyboardHeightSubject = CurrentValueSubject<CGFloat, Never>(0)
-        let keyboardIsHiddenSubject = CurrentValueSubject<Bool, Never>(0)
+        let keyboardIsHiddenSubject = CurrentValueSubject<Bool, Never>(false)
 
         let historyButtonTapped = input.historyButtonTapped
             .eraseToAnyPublisher()

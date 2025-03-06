@@ -24,7 +24,6 @@ final class TypingResultView: BaseView {
     // WPM
     private let wpmLabel: ResultTitleLabel = {
         let label = ResultTitleLabel()
-        label.configureView(title: TypingCompletedLabelText.wpm.rawValue)
         return label
     }()
     
@@ -38,7 +37,6 @@ final class TypingResultView: BaseView {
     // ACC
     private let accLabel: ResultTitleLabel = {
         let label = ResultTitleLabel()
-        label.configureView(title: TypingCompletedLabelText.acc.rawValue)
         return label
     }()
     
@@ -51,7 +49,6 @@ final class TypingResultView: BaseView {
     // Date
     private let dateLabel: ResultTitleLabel = {
         let label = ResultTitleLabel()
-        label.configureView(title: TypingCompletedLabelText.date.rawValue)
         return label
     }()
     
@@ -88,7 +85,8 @@ final class TypingResultView: BaseView {
 }
 
 extension TypingResultView {
-    func setPerformance(_ performance: PilsaPerformance) {
+    func setPerformance(_ performance: PilsaPerformance?) {
+        guard let performance else { return }
         wpmValueLabel.configureView(title: String(performance.wpm))
         accValueLabel.configureView(title: String(performance.acc) + "%")
         dateValueLabel.configureView(title: performance.date.toEnglishStyleDay)

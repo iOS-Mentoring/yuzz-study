@@ -7,5 +7,5 @@
 
 struct PilsaTypingResult {
     let pilsaInfo: PilsaInfo = PilsaInfo.defaultPilsaInfo
-    let pilsaPerformance: PilsaPerformance
+    let pilsaPerformance: PilsaPerformance?
 }
