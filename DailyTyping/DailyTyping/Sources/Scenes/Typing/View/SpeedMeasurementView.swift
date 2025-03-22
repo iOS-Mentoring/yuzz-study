@@ -62,8 +62,12 @@ final class SpeedMeasurementView: BaseView {
     }
     
     func getSecondText(second: Int) -> String {
-        let resultSecond = String.getFormattedTwoDigit(number: second)
+        let resultSecond = getFormattedTwoDigit(number: second)
         return second != 60 ? "00:00:\(resultSecond)" : "00:01:00"
+    }
+    
+    func getFormattedTwoDigit(number: Int) -> String {
+        return String(format: "%02d", number)
     }
     
     func startProgressView() {
@@ -71,10 +75,14 @@ final class SpeedMeasurementView: BaseView {
     }
     
     func setProgressLayout(second: Int) {
-        progressView.updateConstraint(of: .trailing, constant: -second.calculateWidth())
+        progressView.updateConstraint(of: .trailing, constant: -calculateWidth(second: second))
         UIView.animate(withDuration: 1) {
             self.layoutIfNeeded()
         }
+    }
+    
+    func calculateWidth(second: Int) -> CGFloat {
+        return UIScreen.width * CGFloat(second)/60.0
     }
     
     func setWPMValue(wpm: Int) {

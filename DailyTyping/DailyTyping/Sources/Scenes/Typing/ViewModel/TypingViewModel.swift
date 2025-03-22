@@ -70,9 +70,10 @@ final class TypingViewModel: ViewModelType{
         }
         .store(in: &cancellables)
         
-        textEverySecond.sink { (text, second) in
+        textEverySecond.sink { [weak self] (text, second) in
+            guard let self else { return }
             let count = text.getMatchHangulCharacterCount()
-            let wpm = second.getWPM(characterCount: count)
+            let wpm = getWPM(second: second, characterCount: count)
             wpmValue.send(wpm)
         }
         .store(in: &cancellables)
@@ -130,5 +131,11 @@ final class TypingViewModel: ViewModelType{
             keyboardHeight: keyboardHeightSubject.eraseToAnyPublisher(),
             keyboardIsHidden: keyboardIsHiddenSubject.eraseToAnyPublisher()
         )
+    }
+    
+    private func getWPM(second: Int, characterCount: Int) -> Int {
+        let minutes = Double(second) / 60.0
+        let wpm = minutes > 0 ? Double(characterCount) / minutes : 0
+        return Int(wpm.rounded())
     }
 }
