@@ -89,7 +89,14 @@ extension TypingResultView {
         guard let performance else { return }
         wpmValueLabel.configureView(title: String(performance.wpm))
         accValueLabel.configureView(title: String(performance.acc) + "%")
-        dateValueLabel.configureView(title: performance.date.toEnglishStyleDay)
+        dateValueLabel.configureView(title: convertToEnglishStyleDay(date: performance.date))
         print(performance.date)
+    }
+    
+    private func convertToEnglishStyleDay(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US") // 한국어 로케일 설정
+        dateFormatter.dateFormat = "MMM dd" // 원하는 포맷 설정
+        return dateFormatter.string(from: date)
     }
 }
