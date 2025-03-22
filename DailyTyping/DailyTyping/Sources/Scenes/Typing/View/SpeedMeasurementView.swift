@@ -75,10 +75,14 @@ final class SpeedMeasurementView: BaseView {
     }
     
     func setProgressLayout(second: Int) {
-        progressView.updateConstraint(of: .trailing, constant: -second.calculateWidth())
+        progressView.updateConstraint(of: .trailing, constant: -calculateWidth(second: second))
         UIView.animate(withDuration: 1) {
             self.layoutIfNeeded()
         }
+    }
+    
+    func calculateWidth(second: Int) -> CGFloat {
+        return UIScreen.width * CGFloat(second)/60.0
     }
     
     func setWPMValue(wpm: Int) {
