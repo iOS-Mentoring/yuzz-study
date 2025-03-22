@@ -62,8 +62,12 @@ final class SpeedMeasurementView: BaseView {
     }
     
     func getSecondText(second: Int) -> String {
-        let resultSecond = String.getFormattedTwoDigit(number: second)
+        let resultSecond = getFormattedTwoDigit(number: second)
         return second != 60 ? "00:00:\(resultSecond)" : "00:01:00"
+    }
+    
+    func getFormattedTwoDigit(number: Int) -> String {
+        return String(format: "%02d", number)
     }
     
     func startProgressView() {
