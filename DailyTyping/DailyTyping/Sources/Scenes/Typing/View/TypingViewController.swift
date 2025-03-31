@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import Combine
 
-final class TypingViewController: BaseViewController {
+final class TypingViewController: UIViewController {
     private let mainView = TypingView()
     private let viewModel: any ViewModelType
     var coordinator: MainCoordinator?
+    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: any ViewModelType) {
         self.viewModel = viewModel
@@ -23,6 +25,8 @@ final class TypingViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
+        configureNavigationItem()
     }
     
     override func loadView() {
@@ -40,7 +44,7 @@ final class TypingViewController: BaseViewController {
     }
     
     // MARK: bind()
-    override func bind() {
+    private func bind() {
         guard let viewModel = viewModel as? TypingViewModel else { return }
         let input = TypingViewModel.Input(
             historyButtonTapped: mainView.historyButton.tapPublisher,
@@ -129,7 +133,7 @@ final class TypingViewController: BaseViewController {
             .store(in: &cancellables)
     }
     
-    override func configureNavigationItem() {
+    private func configureNavigationItem() {
         navigationItem.titleView = mainView.navigationTitleLabel
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: mainView.historyButton)
     }
