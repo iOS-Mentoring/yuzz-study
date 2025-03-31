@@ -8,10 +8,11 @@
 import UIKit
 import Combine
 
-class LinkWebViewController: BaseViewController {
+class LinkWebViewController: UIViewController {
     private let mainView = LinkWebView()
     private let viewModel: any ViewModelType
     var coordinator: LinkWebCoordinator?
+    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: any ViewModelType) {
         self.viewModel = viewModel
@@ -28,14 +29,14 @@ class LinkWebViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        bind()
     }
     
     override func loadView() {
         view = mainView
     }
 
-    override func bind() {
+    private func bind() {
         guard let viewModel = viewModel as? LinkWebViewModel else { return }
         let input = LinkWebViewModel.Input(viewDidLoadTrigger: Just(()).eraseToAnyPublisher())
         

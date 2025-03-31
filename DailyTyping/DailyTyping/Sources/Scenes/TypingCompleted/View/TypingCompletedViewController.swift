@@ -8,11 +8,12 @@
 import UIKit
 import Combine
 
-final class TypingCompletedViewController: BaseViewController {
+final class TypingCompletedViewController: UIViewController {
     private let mainView = TypingCompletedView()
     private let viewModel: any ViewModelType
     var coordinator: TypingCompletedCoordinator?
     private var pilsaTypingResult: PilsaTypingResult
+    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: any ViewModelType, pilsaTypingResult: PilsaTypingResult) {
         self.viewModel = viewModel
@@ -27,8 +28,14 @@ final class TypingCompletedViewController: BaseViewController {
     deinit {
         coordinator?.removeCoordinator()
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureNavigationItem()
+        bind()
+    }
      
-    override func bind() {
+    private func bind() {
         guard let viewModel = viewModel as? TypingCompletedViewModel else { return }
         let input = TypingCompletedViewModel.Input(
             viewDidLoad: Just(pilsaTypingResult).eraseToAnyPublisher(),
@@ -85,7 +92,7 @@ final class TypingCompletedViewController: BaseViewController {
         mainView.gradientLayer.frame = mainView.gradientView.bounds
     }
 
-    override func configureNavigationItem() {
+    private func configureNavigationItem() {
         navigationItem.hidesBackButton = true
         navigationController?.navigationBar.backgroundColor = .inversePrimaryEmphasis
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: mainView.closeButton)

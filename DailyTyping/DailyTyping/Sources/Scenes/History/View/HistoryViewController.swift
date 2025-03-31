@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class HistoryViewController: BaseViewController {
+final class HistoryViewController: UIViewController {
     private let mainView = HistoryView()
     private let viewModel: any ViewModelType
     var coordinator: HistoryCoordinator?
@@ -16,6 +16,7 @@ final class HistoryViewController: BaseViewController {
     private var dataSource: UICollectionViewDiffableDataSource<HistorySection, CalendarPilsaItem>!
     private typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<WeekCalendarHeaderView>
     var dateList: [Date] = []
+    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: any ViewModelType) {
         self.viewModel = viewModel
@@ -32,13 +33,15 @@ final class HistoryViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        bind()
+        configureNavigationItem()
     }
     
     override func loadView() {
         view = mainView
     }
     
-    override func bind() {
+    private func bind() {
         guard let viewModel = viewModel as? HistoryViewModel else { return }
         let input = HistoryViewModel.Input(
             viewDidLoad: Just(()).eraseToAnyPublisher()
@@ -62,7 +65,7 @@ final class HistoryViewController: BaseViewController {
             .store(in: &cancellables)
     }
     
-    override func configureNavigationItem() {
+    private func configureNavigationItem() {
         navigationController?.navigationBar.backgroundColor = .inversePrimaryEmphasis
         navigationItem.titleView = mainView.navigationTitleLabel
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: mainView.backButton)
