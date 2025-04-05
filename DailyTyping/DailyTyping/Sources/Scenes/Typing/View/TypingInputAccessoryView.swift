@@ -16,29 +16,9 @@ final class TypingInputAccessoryView: BaseView {
         return stackView
     }()
     
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        let title = TypingLabelText.defaultTitle.rawValue
-        label.text = title
-        label.setAttributedString(
-            text: title,
-            font: .pretendard(type: .Bold, size: 13),
-            lineHeight: 16
-        )
-        return label
-    }()
+    private let titleLabel = UILabel()
     
-    private let authorLabel: UILabel = {
-        let label = UILabel()
-        let title = TypingLabelText.author.rawValue
-        label.text = title
-        label.setAttributedString(
-            text: title,
-            font: .pretendard(type: .Regular, size: 11),
-            lineHeight: 14
-        )
-        return label
-    }()
+    private let authorLabel = UILabel()
     
     let linkButton: UIButton = {
         let button = UIButton()
@@ -62,5 +42,20 @@ final class TypingInputAccessoryView: BaseView {
     
     func addBorderToTypingInfoView() {
         layer.addBorder(to: [.top], color: .primaryEmphasis, width: 1)
+    }
+    
+    func setPilsaInfo(_ pilsaInfo: PilsaInfo) {
+        print(pilsaInfo)
+        titleLabel.setAttributedString(
+            text: pilsaInfo.title,
+            font: .pretendard(type: .Bold, size: 13),
+            lineHeight: 16
+        )
+        
+        authorLabel.setAttributedString(
+            text: pilsaInfo.author,
+            font: .pretendard(type: .Regular, size: 11),
+            lineHeight: 14
+        )
     }
 }

@@ -3,36 +3,40 @@
 //
 import Combine
 import Foundation
+
+
+enum SomeError: Error {
+    case deallocated
+}
+
 final class TypingViewModel: ViewModelType{
     private  var cancellables = Set<AnyCancellable>()
     private let timeProvider: TimeProvider
+    private let pilsaRepository: PilsaRepository
     
     struct Input {
-        let historyButtonTapped: AnyPublisher<Void, Never>
-        let linkButtonTapped: AnyPublisher<Void, Never>
+        let viewDidLoad: AnyPublisher<Void, Never>
         let textViewDidChanged: AnyPublisher<String, Never>
     }
     
     struct Output {
-        let historyButtonTapped: AnyPublisher<Void, Never>
-        let linkButtonTapped: AnyPublisher<Void, Never>
+        let pilsaInfo: AnyPublisher<PilsaInfo, Never>
         let typingStarted: AnyPublisher<Void, Never>
         let elapsedTime: AnyPublisher<Int, Never>
         let wpmValue: AnyPublisher<Int, Never>
         let playTimeFinished: AnyPublisher<PilsaTypingResult, Never>
         let typingFinished: AnyPublisher<PilsaTypingResult, Never>
         let validateInputText: AnyPublisher<NSAttributedString, Never>
-        
-        let keyboardHeight: AnyPublisher<CGFloat, Never>
-        let keyboardIsHidden: AnyPublisher<Bool, Never>
     }
 
-    init(timeProvider: TimeProvider) {
+    init(timeProvider: TimeProvider, pilsaRepository: PilsaRepository) {
         print(#function)
         self.timeProvider = timeProvider
+        self.pilsaRepository = pilsaRepository
     }
     
     func transform(input: Input) -> Output {
+        let pilsaInfoSubject = PassthroughSubject<PilsaInfo, Never>()
         let elapsedTimePublisher = PassthroughSubject<Int, Never>()
         let textEverySecond = PassthroughSubject<(String, Int), Never>()
         let wpmValue = CurrentValueSubject<Int, Never>(0)
@@ -41,20 +45,23 @@ final class TypingViewModel: ViewModelType{
         let typingFinished = PassthroughSubject<PilsaTypingResult, Never>()
         let validateInputText = PassthroughSubject<NSAttributedString, Never>()
         
-        let keyboardHeightSubject = CurrentValueSubject<CGFloat, Never>(0)
-        let keyboardIsHiddenSubject = CurrentValueSubject<Bool, Never>(false)
-
-        let historyButtonTapped = input.historyButtonTapped
-            .eraseToAnyPublisher()
-        
-        let linkButtonTapped = input.linkButtonTapped
-            .eraseToAnyPublisher()
+        input.viewDidLoad
+             .flatMap { [weak self] _ -> AnyPublisher<PilsaInfo, Never> in
+                 guard let self else {
+                     return Empty<PilsaInfo, Never>().eraseToAnyPublisher()
+                 }
+                 return self.pilsaRepository.fetchPilsaInfoPublisher().eraseToAnyPublisher()
+             }
+             .sink { pilsaInfo in
+                 pilsaInfoSubject.send(pilsaInfo)
+             }
+             .store(in: &cancellables)
         
         // 처음으로 빈 문자열이 아닌 값이 입력되었을 때 이벤트 방출
         let typingStart = input.textViewDidChanged
             .filter { !$0.isEmpty }
             .map { _ in return () }
-            .prefix(1)  // 처음 방출 이후 스트림 완료 -> 더 이상 구독 X
+            .prefix(1)
             .eraseToAnyPublisher()
         
         
@@ -106,30 +113,14 @@ final class TypingViewModel: ViewModelType{
         .store(in: &cancellables)
         
         
-        // MARK: 키보드 높이 구독
-        CombineKeyboard.shared.visibleHeight
-            .sink { height in
-                keyboardHeightSubject.send(height)
-            }
-            .store(in: &cancellables)
-        
-        CombineKeyboard.shared.isHidden
-            .sink { isHidden in
-                keyboardIsHiddenSubject.send(isHidden)
-            }
-            .store(in: &cancellables)
-        
         return Output(
-            historyButtonTapped: historyButtonTapped,
-            linkButtonTapped: linkButtonTapped,
+            pilsaInfo: pilsaInfoSubject.eraseToAnyPublisher(),
             typingStarted: typingStart,
             elapsedTime: elapsedTimePublisher.eraseToAnyPublisher(),
             wpmValue: wpmValue.eraseToAnyPublisher(),
             playTimeFinished: playTimeFinished.eraseToAnyPublisher(),
             typingFinished: typingFinished.eraseToAnyPublisher(),
-            validateInputText: validateInputText.eraseToAnyPublisher(),
-            keyboardHeight: keyboardHeightSubject.eraseToAnyPublisher(),
-            keyboardIsHidden: keyboardIsHiddenSubject.eraseToAnyPublisher()
+            validateInputText: validateInputText.eraseToAnyPublisher()
         )
     }
     

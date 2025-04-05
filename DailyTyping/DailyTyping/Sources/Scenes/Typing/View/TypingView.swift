@@ -54,6 +54,11 @@ final class TypingView: BaseView {
         setTextViewFirstResponder()
     }
     
+    func setPilsaInfo(_ pilsaInfo: PilsaInfo) {
+        placeholderTextView.configureView(textValue: pilsaInfo.message)
+        typingInputAccessoryView.setPilsaInfo(pilsaInfo)
+    }
+    
     func setTextViewFirstResponder() {
         typingTextView.becomeFirstResponder()
     }
