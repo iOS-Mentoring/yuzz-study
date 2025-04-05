@@ -14,9 +14,12 @@ final class TypingViewController: UIViewController {
     var coordinator: MainCoordinator?
     private var cancellables = Set<AnyCancellable>()
     
+    private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
+    
     init(viewModel: any ViewModelType) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -25,7 +28,7 @@ final class TypingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
+        viewDidLoadSubject.send(())
         configureNavigationItem()
     }
     
@@ -47,21 +50,31 @@ final class TypingViewController: UIViewController {
     private func bind() {
         guard let viewModel = viewModel as? TypingViewModel else { return }
         let input = TypingViewModel.Input(
-            historyButtonTapped: mainView.historyButton.tapPublisher,
-            linkButtonTapped: mainView.typingInputAccessoryView.linkButton.tapPublisher,
+            viewDidLoad: viewDidLoadSubject.eraseToAnyPublisher(),
             textViewDidChanged: mainView.typingTextView.textPublisher
         )
         
         let output = viewModel.transform(input: input)
         
-        output.historyButtonTapped
+        output.pilsaInfo
+            .receive(on: RunLoop.main)
+            .sink { [weak self] pilsaInfo in
+                guard let self else { return }
+                mainView.setPilsaInfo(pilsaInfo)
+            }
+            .store(in: &cancellables)
+
+        
+        mainView.historyButton.tapPublisher
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 guard let self, let coordinator else { return }
                 coordinator.showHistoryVC()
             }
             .store(in: &cancellables)
         
-        output.linkButtonTapped
+        mainView.typingInputAccessoryView.linkButton.tapPublisher
+            .receive(on: RunLoop.main)
             .sink { [weak self] in
                 guard let self, let coordinator else { return }
                 coordinator.showLinkWebVC()
@@ -106,18 +119,16 @@ final class TypingViewController: UIViewController {
             }
             .store(in: &cancellables)
         
-        output.keyboardHeight
+        CombineKeyboard.shared.visibleHeight
             .receive(on: RunLoop.main)
             .sink { [weak self] keyboardHeight in
                 guard let self else { return }
-                
-                // textView의 contentInset.bottom을 키보드의 높이만큼 설정
                 mainView.setTextViewContentInset(keyboardHeight: keyboardHeight)
                 mainView.setTextViewAutoScroll()
             }
             .store(in: &cancellables)
         
-        output.keyboardIsHidden
+        CombineKeyboard.shared.isHidden
             .receive(on: RunLoop.main)
             .sink { [weak self] isHidden in
                 guard let self else { return }
