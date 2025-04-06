@@ -1,14 +1,17 @@
 //
-//  CalendarManager.swift
+//  CalendarUseCase.swift
 //  DailyTyping
 //
-//  Created by 조유진 on 3/1/25.
+//  Created by 조유진 on 4/6/25.
 //
 
 import Foundation
 
-final class CalendarManager {
-    
+protocol CalendarUseCase {
+    func getCurrentWeekDates() -> [Date]
+}
+
+final class CalendarUseCaseImpl: CalendarUseCase {
     func getCurrentWeekDates() -> [Date] {
         var calendar = Calendar.current
         calendar.firstWeekday = 1   // 일요일부터 시작
