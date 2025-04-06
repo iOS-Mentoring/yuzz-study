@@ -17,7 +17,13 @@ final class MainCoordinator: Coordinator {
     }
     
     func start() {
-        let viewModel = TypingViewModel(timeProvider: TimerManager(), pilsaRepository: PilsaRepositoryImpl())
+        let viewModel = TypingViewModel(
+            timeProvider: TimerManager(),
+            fetchPilsaInfoUseCase: DefaultFetchPilsaInfoUseCase(
+                pilsaInfoRepository: PilsaInfoRepositoryImpl()
+            )
+        )
+        
         let mainVC = TypingViewController(viewModel: viewModel)
         mainVC.coordinator = self
         navigationController.pushViewController(mainVC, animated: false)

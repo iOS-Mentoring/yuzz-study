@@ -23,7 +23,6 @@ final class TypingCompletedHeaderView: BaseView {
     private let goodLabel: UILabel = {
         let label = UILabel()
         let title = TypingCompletedLabelText.good.rawValue
-        label.text = title
         label.setAttributedString(text: title, font: .timesNewRoman(type: .italic, size: 50), lineHeight: 36, charSpacing: -0.05)
         return label
     }()
@@ -31,7 +30,6 @@ final class TypingCompletedHeaderView: BaseView {
     private let typingCompletedLabel: UILabel = {
         let label = UILabel()
         let title = TypingCompletedLabelText.typingCompleted.rawValue
-        label.text = title
         label.setAttributedString(text: title, font: .pretendard(type: .Medium, size: 16), lineHeight: 20, charSpacing: -0.03)
         return label
     }()

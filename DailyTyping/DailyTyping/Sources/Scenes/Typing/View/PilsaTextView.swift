@@ -18,10 +18,10 @@ final class PilsaTextView: UITextView {
     }
     
     func configureView(textValue: String? = nil, color textColor: UIColor? = UIColor.gray300, backgroundColor: UIColor? = UIColor.gray100, font: UIFont? = UIFont.pretendard(type: .Regular, size: 20), isPlaceHolder: Bool = true, containerInset: Double = 20) {
-        self.text = textValue
+//        self.text = textValue
         self.backgroundColor = isPlaceHolder ? backgroundColor : .clear
         self.font = font
-        isPlaceHolder ? setAttributedString(text: text) : setAttributedString(text: text, color: .primaryEmphasis)
+        isPlaceHolder ? setAttributedString(text: textValue) : setAttributedString(text: text, color: .primaryEmphasis)
         contentInset = UIEdgeInsets(top: containerInset, left: containerInset, bottom: containerInset, right: containerInset)
         isEditable = !isPlaceHolder
         isSelectable = !isPlaceHolder

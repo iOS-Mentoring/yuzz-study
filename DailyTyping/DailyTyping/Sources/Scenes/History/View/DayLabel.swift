@@ -19,7 +19,6 @@ final class DayLabel: UILabel {
     
     
     func configureView(day: String) {
-        text = day
         setAttributedString(text: day, font: .pretendard(type: .SemiBold, size: 14), lineHeight: 12)
         textAlignment = .center
     }

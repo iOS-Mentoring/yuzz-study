@@ -15,7 +15,6 @@ final class HistoryView: BaseView {
     let navigationTitleLabel: UILabel = {
         let label = UILabel()
         let title = HistoryLabelText.navigationTitle.rawValue
-        label.text = title
         label.setAttributedString(
             text: title,
             color: .primaryEmphasis,

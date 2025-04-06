@@ -11,7 +11,6 @@ final class TypingView: BaseView {
     let navigationTitleLabel: UILabel = {
         let label = UILabel()
         let title = TypingLabelText.navigationTitle.rawValue
-        label.text = title
         label.setAttributedString(
             text: title,
             color: .primaryEmphasis,

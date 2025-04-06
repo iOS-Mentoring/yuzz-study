@@ -34,7 +34,6 @@ final class SpeedMeasurementView: BaseView {
     private let progressTimeLabel: UILabel = {
         let label = UILabel()
         let title = "00:00:00"
-        label.text = title
         label.font = UIFont.monospacedDigitSystemFont(ofSize: 13, weight: .regular)
         label.setAttributedString(
             text: title,

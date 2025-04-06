@@ -22,7 +22,6 @@ final class ResultValueLabel: UILabel {
     }
     
     func configureView(title: String) {
-        text = title
         setAttributedString(text: title, font: .pretendard(type: .Bold, size: 20), lineHeight: 20, charSpacing: -0.025)
         textAlignment = .center
         myIntrinsicSize = CGSize(width: 100, height: 20)

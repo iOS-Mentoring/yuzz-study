@@ -12,7 +12,7 @@ enum SomeError: Error {
 final class TypingViewModel: ViewModelType{
     private  var cancellables = Set<AnyCancellable>()
     private let timeProvider: TimeProvider
-    private let pilsaRepository: PilsaRepository
+    private let fetchPilsaInfoUseCase: FetchPilsaInfoUseCase
     
     struct Input {
         let viewDidLoad: AnyPublisher<Void, Never>
@@ -29,10 +29,10 @@ final class TypingViewModel: ViewModelType{
         let validateInputText: AnyPublisher<NSAttributedString, Never>
     }
 
-    init(timeProvider: TimeProvider, pilsaRepository: PilsaRepository) {
+    init(timeProvider: TimeProvider, fetchPilsaInfoUseCase: FetchPilsaInfoUseCase) {
         print(#function)
         self.timeProvider = timeProvider
-        self.pilsaRepository = pilsaRepository
+        self.fetchPilsaInfoUseCase = fetchPilsaInfoUseCase
     }
     
     func transform(input: Input) -> Output {
@@ -50,7 +50,7 @@ final class TypingViewModel: ViewModelType{
                  guard let self else {
                      return Empty<PilsaInfo, Never>().eraseToAnyPublisher()
                  }
-                 return self.pilsaRepository.fetchPilsaInfoPublisher().eraseToAnyPublisher()
+                 return self.fetchPilsaInfoUseCase.execute().eraseToAnyPublisher()
              }
              .sink { pilsaInfo in
                  pilsaInfoSubject.send(pilsaInfo)

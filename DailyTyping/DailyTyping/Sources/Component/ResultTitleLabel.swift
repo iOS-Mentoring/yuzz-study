@@ -14,7 +14,6 @@ final class ResultTitleLabel: UILabel {
     }
     
     func configureView(title: String) {
-        text = title
         setAttributedString(text: title, font: .pretendard(type: .Regular, size: 11), lineHeight: 14, charSpacing: -0.025)
     }
     
