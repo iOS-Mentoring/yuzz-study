@@ -45,7 +45,6 @@ final class TypingInputAccessoryView: BaseView {
     }
     
     func setPilsaInfo(_ pilsaInfo: PilsaInfo) {
-        print(pilsaInfo)
         titleLabel.setAttributedString(
             text: pilsaInfo.title,
             font: .pretendard(type: .Bold, size: 13),

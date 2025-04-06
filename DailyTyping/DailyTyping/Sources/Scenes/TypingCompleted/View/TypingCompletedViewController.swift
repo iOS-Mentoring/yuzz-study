@@ -12,13 +12,13 @@ final class TypingCompletedViewController: UIViewController {
     private let mainView = TypingCompletedView()
     private let viewModel: any ViewModelType
     var coordinator: TypingCompletedCoordinator?
-    private var pilsaTypingResult: PilsaTypingResult
     private var cancellables = Set<AnyCancellable>()
+    private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
     
-    init(viewModel: any ViewModelType, pilsaTypingResult: PilsaTypingResult) {
+    init(viewModel: any ViewModelType) {
         self.viewModel = viewModel
-        self.pilsaTypingResult = pilsaTypingResult
         super.init(nibName: nil, bundle: nil)
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -31,14 +31,14 @@ final class TypingCompletedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewDidLoadSubject.send(())
         configureNavigationItem()
-        bind()
     }
      
     private func bind() {
         guard let viewModel = viewModel as? TypingCompletedViewModel else { return }
         let input = TypingCompletedViewModel.Input(
-            viewDidLoad: Just(pilsaTypingResult).eraseToAnyPublisher(),
+            viewDidLoad: viewDidLoadSubject.eraseToAnyPublisher(),
             closeButtonTapped: mainView.closeButton.tapPublisher,
             downloadImageButtonTapped: mainView.downloadImageButton.tapPublisher
         )
@@ -47,11 +47,7 @@ final class TypingCompletedViewController: UIViewController {
         
         output.pilsaTypingResult
             .sink { [weak self] pilsaTypingResult in
-                guard let self else {
-                    print("TypingCompletedViewController self 없음")
-                    return
-                }
-                print("TypingCompletedViewController에서 받음: \(pilsaTypingResult)")
+                guard let self else { return }
                 mainView.setPilsaTypingResult(pilsaTypingResult)
             }
             .store(in: &cancellables)

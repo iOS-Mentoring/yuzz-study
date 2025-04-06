@@ -15,7 +15,7 @@ final class HistoryViewController: UIViewController {
     
     private var dataSource: UICollectionViewDiffableDataSource<HistorySection, CalendarPilsaItem>!
     private typealias HeaderRegistration = UICollectionView.SupplementaryRegistration<WeekCalendarHeaderView>
-    var dateList: [Date] = []
+
     private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: any ViewModelType) {
@@ -49,6 +49,14 @@ final class HistoryViewController: UIViewController {
         
         let output = viewModel.transform(input: input)
         
+        mainView.backButton.tapPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                coordinator?.removeCoordinator()
+            }
+            .store(in: &cancellables)
+        
         output.configureDataSource
             .sink { [weak self] _ in
                 guard let self else { return }
@@ -79,7 +87,6 @@ extension HistoryViewController {
             cell.configureCell(calendarPilsaItem: item)
             return cell
         })
-        
     }
     
     private func configureSupplementaryViewDataSource() {

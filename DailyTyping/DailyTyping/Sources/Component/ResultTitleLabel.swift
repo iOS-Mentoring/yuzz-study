@@ -13,7 +13,12 @@ final class ResultTitleLabel: UILabel {
         super.init(frame: frame)
     }
     
-    func configureView(title: String) {
+    init(title: String) {
+        super.init(frame: .zero)
+        configureView(title: title)
+    }
+    
+    private func configureView(title: String) {
         setAttributedString(text: title, font: .pretendard(type: .Regular, size: 11), lineHeight: 14, charSpacing: -0.025)
     }
     

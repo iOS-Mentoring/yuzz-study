@@ -18,7 +18,11 @@ final class MainCoordinator: Coordinator {
     
     func start() {
         let viewModel = TypingViewModel(
-            timeProvider: TimerManager(),
+            timerUseCase: TimerUseCaseImpl(
+                pilsaUseCase: PilsaUseCaseImpl(
+                    typingCalculator: TypingCalulatorImpl()
+                )
+            ),
             fetchPilsaInfoUseCase: DefaultFetchPilsaInfoUseCase(
                 pilsaInfoRepository: PilsaInfoRepositoryImpl()
             )

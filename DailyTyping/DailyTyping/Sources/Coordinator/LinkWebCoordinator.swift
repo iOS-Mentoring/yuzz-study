@@ -24,7 +24,6 @@ final class LinkWebCoordinator: Coordinator {
     }
     
     func removeCoordinator() {
-        print(#function)
         parentCoordinator?.removeChildCoordinator(child: self)
     }
 }

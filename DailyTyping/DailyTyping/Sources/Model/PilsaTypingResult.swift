@@ -6,6 +6,6 @@
 //
 
 struct PilsaTypingResult {
-    let pilsaInfo: PilsaInfo = PilsaInfo.defaultPilsaInfo
+    let pilsaInfo: PilsaInfo
     let pilsaPerformance: PilsaPerformance?
 }
