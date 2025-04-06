@@ -8,18 +8,18 @@
 import Combine
 import Foundation
 
-protocol PilsaRepository {
+protocol PilsaInfoRepository {
     func fetchPilsaInfo(title: String) async throws -> PilsaInfo
 }
 
-extension PilsaRepository {
+extension PilsaInfoRepository {
     func fetchPilsaInfo(title: String = TypingLabelText.defaultTitle.rawValue) async throws -> PilsaInfo {
         return try await fetchPilsaInfo(title: title)
     }
 }
 
 
-extension PilsaRepository {
+extension PilsaInfoRepository {
     func fetchPilsaInfoPublisher(title: String = TypingLabelText.defaultTitle.rawValue) -> Future<PilsaInfo, Never> {
         Future(asyncFunc: {
             return try await self.fetchPilsaInfo(title: title)
@@ -27,7 +27,7 @@ extension PilsaRepository {
     }
 }
 
-final class PilsaRepositoryImpl: PilsaRepository {
+final class PilsaInfoRepositoryImpl: PilsaInfoRepository {
     func fetchPilsaInfo(title: String) async throws -> PilsaInfo {
         return .mock
     }
