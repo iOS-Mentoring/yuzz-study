@@ -32,19 +32,9 @@ final class PilsaInfoView: BaseView {
         return stackView
     }()
     
-    private let typingTitleLabel: UILabel = {
-        let label = UILabel()
-        let title = ""
-        label.setAttributedString(text: title, font: .pretendard(type: .SemiBold, size: 16), lineHeight: 19)
-        return label
-    }()
+    private let typingTitleLabel = UILabel()
     
-    private let typingAuthorLabel: UILabel = {
-        let label = UILabel()
-        let title = ""
-        label.setAttributedString(text: title, font: .pretendard(type: .Regular, size: 12), lineHeight: 16)
-        return label
-    }()
+    private let typingAuthorLabel = UILabel()
     
     
     override func configureLayout() {
@@ -70,15 +60,15 @@ extension PilsaInfoView {
         setPilsaText(pilsaInfo.message)
     }
     
-    func setPilsaText(_ message: String) {
+    private func setPilsaText(_ message: String) {
         typingTextLabel.setAttributedString(text: message, font: .pretendard(type: .Regular, size: 18), lineHeight: 28, charSpacing: -0.04)
     }
     
-    func setTitle(_ title: String) {
+    private func setTitle(_ title: String) {
         typingTextLabel.setAttributedString(text: title, font: .pretendard(type: .SemiBold, size: 16), lineHeight: 19)
     }
     
-    func setAuthor(_ author: String) {
+    private func setAuthor(_ author: String) {
         typingAuthorLabel.setAttributedString(text: author, font: .pretendard(type: .Regular, size: 12), lineHeight: 16)
     }
 }

@@ -19,14 +19,13 @@ final class TypingCompletedCoordinator: Coordinator {
     }
     
     func start() {
-        let viewModel = TypingCompletedViewModel()
-        let typingCompletedVC = TypingCompletedViewController(viewModel: viewModel, pilsaTypingResult: pilsaTypingResult)
+        let viewModel = TypingCompletedViewModel(pilsaTypingResult: pilsaTypingResult)
+        let typingCompletedVC = TypingCompletedViewController(viewModel: viewModel)
         typingCompletedVC.coordinator = self
         navigationController.pushViewController(typingCompletedVC, animated: false)
     }
     
     func removeCoordinator() {
-        print(#function)
         navigationController.popViewController(animated: false)
         parentCoordinator?.removeChildCoordinator(child: self)
     }

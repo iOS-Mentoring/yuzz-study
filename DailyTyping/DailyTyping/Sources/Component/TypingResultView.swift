@@ -22,40 +22,21 @@ final class TypingResultView: BaseView {
     }()
     
     // WPM
-    private let wpmLabel: ResultTitleLabel = {
-        let label = ResultTitleLabel()
-        return label
-    }()
-    
-    private let wpmValueLabel: ResultValueLabel = {
-        let label = ResultValueLabel()
-        return label
-    }()
+    private let wpmLabel = ResultTitleLabel(title: TypingCompletedLabelText.wpm.rawValue)
+    private let wpmValueLabel = ResultValueLabel()
     
     private lazy var wpmStackView = createStackView(view1: wpmLabel, view2: wpmValueLabel)
     
     // ACC
-    private let accLabel: ResultTitleLabel = {
-        let label = ResultTitleLabel()
-        return label
-    }()
+    private let accLabel = ResultTitleLabel(title: TypingCompletedLabelText.acc.rawValue)
+    private let accValueLabel = ResultValueLabel()
     
-    private let accValueLabel: ResultValueLabel = {
-        let label = ResultValueLabel()
-        return label
-    }()
     private lazy var accStackView = createStackView(view1: accLabel, view2: accValueLabel)
     
     // Date
-    private let dateLabel: ResultTitleLabel = {
-        let label = ResultTitleLabel()
-        return label
-    }()
+    private let dateLabel = ResultTitleLabel(title: TypingCompletedLabelText.date.rawValue)
+    private let dateValueLabel = ResultValueLabel()
     
-    private let dateValueLabel: ResultValueLabel = {
-        let label = ResultValueLabel()
-        return label
-    }()
     private lazy var dateStackView = createStackView(view1: dateLabel, view2: dateValueLabel)
     
     override func configureLayout() {
@@ -90,7 +71,6 @@ extension TypingResultView {
         wpmValueLabel.configureView(title: String(performance.wpm))
         accValueLabel.configureView(title: String(performance.acc) + "%")
         dateValueLabel.configureView(title: convertToEnglishStyleDay(date: performance.date))
-        print(performance.date)
     }
     
     private func convertToEnglishStyleDay(date: Date) -> String {

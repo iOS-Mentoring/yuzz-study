@@ -24,7 +24,7 @@ final class HistoryCoordinator: Coordinator {
     }
     
     func removeCoordinator() {
-        print(#function)
+        navigationController.popViewController(animated: true)
         parentCoordinator?.removeChildCoordinator(child: self)
     }
 }

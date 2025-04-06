@@ -10,8 +10,8 @@ enum SomeError: Error {
 }
 
 final class TypingViewModel: ViewModelType{
-    private  var cancellables = Set<AnyCancellable>()
-    private let timeProvider: TimeProvider
+    private var cancellables = Set<AnyCancellable>()
+    private let timerUseCase: TimerUseCase
     private let fetchPilsaInfoUseCase: FetchPilsaInfoUseCase
     
     struct Input {
@@ -25,25 +25,17 @@ final class TypingViewModel: ViewModelType{
         let elapsedTime: AnyPublisher<Int, Never>
         let wpmValue: AnyPublisher<Int, Never>
         let playTimeFinished: AnyPublisher<PilsaTypingResult, Never>
-        let typingFinished: AnyPublisher<PilsaTypingResult, Never>
-        let validateInputText: AnyPublisher<NSAttributedString, Never>
+        let inputAttributedString: AnyPublisher<NSAttributedString, Never>
     }
 
-    init(timeProvider: TimeProvider, fetchPilsaInfoUseCase: FetchPilsaInfoUseCase) {
-        print(#function)
-        self.timeProvider = timeProvider
+    init(timerUseCase: TimerUseCase, fetchPilsaInfoUseCase: FetchPilsaInfoUseCase) {
+        self.timerUseCase = timerUseCase
         self.fetchPilsaInfoUseCase = fetchPilsaInfoUseCase
     }
     
     func transform(input: Input) -> Output {
         let pilsaInfoSubject = PassthroughSubject<PilsaInfo, Never>()
-        let elapsedTimePublisher = PassthroughSubject<Int, Never>()
-        let textEverySecond = PassthroughSubject<(String, Int), Never>()
-        let wpmValue = CurrentValueSubject<Int, Never>(0)
-        let currentText = CurrentValueSubject<String, Never>("")
-        let playTimeFinished = PassthroughSubject<PilsaTypingResult, Never>()
-        let typingFinished = PassthroughSubject<PilsaTypingResult, Never>()
-        let validateInputText = PassthroughSubject<NSAttributedString, Never>()
+        let currentTextSubject = CurrentValueSubject<String, Never>("")
         
         input.viewDidLoad
              .flatMap { [weak self] _ -> AnyPublisher<PilsaInfo, Never> in
@@ -57,76 +49,61 @@ final class TypingViewModel: ViewModelType{
              }
              .store(in: &cancellables)
         
-        // 처음으로 빈 문자열이 아닌 값이 입력되었을 때 이벤트 방출
-        let typingStart = input.textViewDidChanged
+        let typingStarted = input.textViewDidChanged
             .filter { !$0.isEmpty }
             .map { _ in return () }
             .prefix(1)
             .eraseToAnyPublisher()
         
-        
-        input.textViewDidChanged.sink { text in // 최근 텍스트 저장
-            currentText.send(text)
-            if text.isMatchHangulCharacter() {
-                typingFinished.send((PilsaTypingResult(pilsaPerformance: .init(wpm: wpmValue.value, acc: text.calculateAcc(), date: Date()))))
-                textEverySecond.send(completion: .finished)
-                wpmValue.send(completion: .finished)
-                elapsedTimePublisher.send(completion: .finished)
+        input.textViewDidChanged
+            .sink { inputText in
+                currentTextSubject.send(inputText)
             }
-            validateInputText.send(text.validateCharacter())
-        }
-        .store(in: &cancellables)
-        
-        textEverySecond.sink { [weak self] (text, second) in
-            guard let self else { return }
-            let count = text.getMatchHangulCharacterCount()
-            let wpm = getWPM(second: second, characterCount: count)
-            wpmValue.send(wpm)
-        }
-        .store(in: &cancellables)
-    
-        
-        typingStart.sink { [weak self] _ in  // 타이핑 시작됐을 때
-            guard let self else { return }
-            let timerPublisher = timeProvider.timerPublisher(every: 1.0, endSeconds: 60)    // 타이머 시작
-            
-            timerPublisher.sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished: // 타이머(60초) 끝났을 때
-                    playTimeFinished.send(PilsaTypingResult(
-                        pilsaPerformance: .init(
-                            wpm: wpmValue.value,
-                            acc: currentText.value.calculateAcc(),
-                            date: Date()
-                        )
-                    ))
-                    textEverySecond.send(completion: .finished)
-                    wpmValue.send(completion: .finished)
-                    elapsedTimePublisher.send(completion: .finished)
-                }
-            }, receiveValue: { seconds in   // 타이머 진행 값
-                elapsedTimePublisher.send(seconds)
-                textEverySecond.send((currentText.value, seconds))
-            })
             .store(in: &cancellables)
+        
+        typingStarted.sink { _ in
+            let currentText = String(currentTextSubject.value.removeFirst())
+            currentTextSubject.send(currentText)
         }
         .store(in: &cancellables)
+             
+        let timerOutput = typingStarted
+            .combineLatest(pilsaInfoSubject)
+            .flatMap { [weak self] (_, pilsaInfo) ->  AnyPublisher<(
+                                                        elapsedTime: AnyPublisher<Int, Never>,
+                                                        wpmValue: AnyPublisher<Int, Never>,
+                                                        inputAttributedString: AnyPublisher<NSAttributedString, Never>,
+                                                        finished: AnyPublisher<PilsaTypingResult, Never>), Never> in
+                guard let self = self else { return Empty().eraseToAnyPublisher() }
+                let output = timerUseCase.startTypingTimer(pilsaInfo: pilsaInfo, inputText: currentTextSubject, every: 1.0, endSeconds: 60)
+                return Just(output).eraseToAnyPublisher()
+            }
+            .share()
+        
+       let elapsedTime = timerOutput
+            .flatMap { $0.elapsedTime }
+            .eraseToAnyPublisher()
+        
+       let wpmValue = timerOutput
+            .flatMap { $0.wpmValue }
+            .eraseToAnyPublisher()
+        
+       let inputAttributedString = timerOutput
+            .flatMap { $0.inputAttributedString }
+            .eraseToAnyPublisher()
+        
+        let playTimeFinished = timerOutput
+            .flatMap { $0.finished }
+            .eraseToAnyPublisher()
         
         
         return Output(
             pilsaInfo: pilsaInfoSubject.eraseToAnyPublisher(),
-            typingStarted: typingStart,
-            elapsedTime: elapsedTimePublisher.eraseToAnyPublisher(),
-            wpmValue: wpmValue.eraseToAnyPublisher(),
-            playTimeFinished: playTimeFinished.eraseToAnyPublisher(),
-            typingFinished: typingFinished.eraseToAnyPublisher(),
-            validateInputText: validateInputText.eraseToAnyPublisher()
+            typingStarted: typingStarted,
+            elapsedTime: elapsedTime,
+            wpmValue: wpmValue,
+            playTimeFinished: playTimeFinished,
+            inputAttributedString: inputAttributedString
         )
-    }
-    
-    private func getWPM(second: Int, characterCount: Int) -> Int {
-        let minutes = Double(second) / 60.0
-        let wpm = minutes > 0 ? Double(characterCount) / minutes : 0
-        return Int(wpm.rounded())
     }
 }

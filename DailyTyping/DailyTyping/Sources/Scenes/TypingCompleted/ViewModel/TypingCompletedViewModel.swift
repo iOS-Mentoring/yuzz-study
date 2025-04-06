@@ -10,8 +10,14 @@ import Combine
 final class TypingCompletedViewModel: ViewModelType {
     private var cancellables = Set<AnyCancellable>()
     
+    private let pilsaTypingResult: PilsaTypingResult
+    
+    init(pilsaTypingResult: PilsaTypingResult) {
+        self.pilsaTypingResult = pilsaTypingResult
+    }
+    
     struct Input {
-        let viewDidLoad: AnyPublisher<PilsaTypingResult, Never>
+        let viewDidLoad: AnyPublisher<Void, Never>
         let closeButtonTapped: AnyPublisher<Void, Never>
         let downloadImageButtonTapped: AnyPublisher<Void, Never>
     }
@@ -23,9 +29,14 @@ final class TypingCompletedViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
+        let pilsaTypingResultSubject = PassthroughSubject<PilsaTypingResult, Never>()
         
-        let viewDidLoad = input.viewDidLoad
-            .eraseToAnyPublisher()
+        input.viewDidLoad
+            .sink { [weak self] _ in
+                guard let self else { return }
+                pilsaTypingResultSubject.send(pilsaTypingResult)
+            }
+            .store(in: &cancellables)
         
         let closeButtonTapped = input.closeButtonTapped
             .eraseToAnyPublisher()
@@ -34,7 +45,7 @@ final class TypingCompletedViewModel: ViewModelType {
             .eraseToAnyPublisher()
         
         return Output(
-            pilsaTypingResult: viewDidLoad,
+            pilsaTypingResult: pilsaTypingResultSubject.eraseToAnyPublisher(),
             closeButtonTapped: closeButtonTapped,
             downloadImageButtonTapped: downloadImageButtonTapped
         )

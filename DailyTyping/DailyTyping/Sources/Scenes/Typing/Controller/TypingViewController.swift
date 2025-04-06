@@ -89,31 +89,32 @@ final class TypingViewController: UIViewController {
             }
             .store(in: &cancellables)
         
-        output.elapsedTime
+        let elapsedTime = output.elapsedTime
             .sink { [weak self] second in
                 guard let self else { return }
                 mainView.setElapsedTime(second: second)
                 mainView.setProgressLayout(second: second)
             }
-            .store(in: &cancellables)
         
-        output.wpmValue
+        let wpmValue = output.wpmValue
             .sink { [weak self] wpmValue in
                 guard let self else { return }
                 mainView.setWPMValue(wpm: wpmValue)
             }
-            .store(in: &cancellables)
         
-        output.validateInputText
+        output.inputAttributedString
             .sink { [weak self] attributedString in
                 guard let self else { return }
                 mainView.setValidAttributedString(attributedString)
             }
             .store(in: &cancellables)
 
-        output.typingFinished.merge(with: output.playTimeFinished)
+        output.playTimeFinished
+            .receive(on: RunLoop.main)
             .sink { [weak self] pilsaTypingResult in
                 guard let self else { return }
+                elapsedTime.cancel()
+                wpmValue.cancel()
                 coordinator?.showTypingCompletedVC(pilsaTypingResult: pilsaTypingResult)
                 mainView.setTypingTextViewIsEditable(false)
             }

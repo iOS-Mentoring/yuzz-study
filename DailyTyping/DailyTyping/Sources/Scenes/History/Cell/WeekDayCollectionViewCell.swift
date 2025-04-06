@@ -38,7 +38,6 @@ final class WeekDayCollectionViewCell: UICollectionViewCell, ViewProtocol {
     
     func configureCell(calendarPilsaItem: CalendarPilsaItem) {
         let dayString = String(Calendar.current.component(.day, from: calendarPilsaItem.day))
-        print(dayString)
         dayLabel.configureView(day: dayString)
         circleView.isHidden = !calendarPilsaItem.isCompleted
     }

@@ -25,7 +25,14 @@ final class SpeedMeasurementView: BaseView {
         let value = "0"
        
         let attributedString = NSMutableAttributedString(string: title + " " + value)
-        attributedString.addAttribute(.font, value: UIFont.pretendard(type: .Bold, size: 13), range: NSRange(location: title.count+1, length: value.count))
+        attributedString.addAttribute(
+            .font,
+            value: UIFont.pretendard(type: .Bold, size: 13),
+            range: NSRange(
+                location: title.count + 1,
+                length: value.count
+            )
+        )
         label.attributedText = attributedString
        
         return label
@@ -45,7 +52,6 @@ final class SpeedMeasurementView: BaseView {
         return label
     }()
 
-    
     override func configureLayout() {
         addSubview(progressView, autoLayout: [.leading(0), .top(0), .bottom(0), .trailing(0), .height(30)])
         addSubview(wpmLabel, autoLayout: [.leading(20), .centerY(0)])
@@ -85,7 +91,6 @@ final class SpeedMeasurementView: BaseView {
     }
     
     func setWPMValue(wpm: Int) {
-        
         wpmLabel.textColor = .inversePrimaryEmphasis
         wpmLabel.font = .pretendard(type: .Light, size: 13)
         
@@ -93,7 +98,14 @@ final class SpeedMeasurementView: BaseView {
         let value = "\(wpm)"
        
         let attributedString = NSMutableAttributedString(string: title + " " + value)
-        attributedString.addAttribute(.font, value: UIFont.pretendard(type: .Bold, size: 13), range: NSRange(location: title.count+1, length: value.count))
+        attributedString.addAttribute(
+            .font,
+            value: UIFont.pretendard(type: .Bold, size: 13),
+            range: NSRange(
+                location: title.count+1,
+                length: value.count
+            )
+        )
         wpmLabel.attributedText = attributedString
     }
 }

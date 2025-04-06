@@ -130,7 +130,7 @@ extension TypingView {
     func setTextViewIsHiddenInset(_ isHidden: Bool) {
         if isHidden {
             [placeholderTextView, typingTextView].forEach {
-                $0.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+                $0.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
             }
         }
     }

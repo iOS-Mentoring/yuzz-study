@@ -33,6 +33,7 @@ final class TypingCompletedView: BaseView {
     private let backgroundImageView: UIImageView = {
         let imageView = UIImageView(image: .crumpledWhitePaper)
         imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .backgroundGray
         return imageView
     }()
     

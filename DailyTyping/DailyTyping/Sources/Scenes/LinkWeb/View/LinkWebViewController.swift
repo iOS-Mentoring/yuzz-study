@@ -44,7 +44,6 @@ class LinkWebViewController: UIViewController {
         
         output.viewDidLoad.sink { [weak self] _ in
             guard let self else { return }
-            print(#function)
             mainView.loadWebView()
         }
         .store(in: &cancellables)
