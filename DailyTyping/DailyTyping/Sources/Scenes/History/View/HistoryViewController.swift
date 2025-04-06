@@ -18,9 +18,12 @@ final class HistoryViewController: UIViewController {
 
     private var cancellables = Set<AnyCancellable>()
     
+    private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
+    
     init(viewModel: any ViewModelType) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -33,7 +36,7 @@ final class HistoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind()
+        viewDidLoadSubject.send(())
         configureNavigationItem()
     }
     
@@ -44,7 +47,7 @@ final class HistoryViewController: UIViewController {
     private func bind() {
         guard let viewModel = viewModel as? HistoryViewModel else { return }
         let input = HistoryViewModel.Input(
-            viewDidLoad: Just(()).eraseToAnyPublisher()
+            viewDidLoad: viewDidLoadSubject.eraseToAnyPublisher()
         )
         
         let output = viewModel.transform(input: input)

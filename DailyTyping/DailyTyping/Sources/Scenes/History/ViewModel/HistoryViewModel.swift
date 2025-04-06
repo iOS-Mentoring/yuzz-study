@@ -9,6 +9,11 @@ import Combine
 
 final class HistoryViewModel: ViewModelType {
     private var cancellables = Set<AnyCancellable>()
+    private let calendarUseCase: CalendarUseCase
+    
+    init(calendarUseCase: CalendarUseCase) {
+        self.calendarUseCase = calendarUseCase
+    }
     
     struct Input {
         let viewDidLoad: AnyPublisher<Void, Never>
@@ -22,14 +27,14 @@ final class HistoryViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         let calendarItemsSubject = CurrentValueSubject<[CalendarPilsaItem], Never>([])
         
-        input.viewDidLoad.sink { [weak self] in
-            guard let self else { return }
-            
-            let calendarManager = CalendarManager()
-            var items: [CalendarPilsaItem] = []
-            for date in calendarManager.getCurrentWeekDates() {
-                items.append(CalendarPilsaItem(day: date, isCompleted: true))
+        input.viewDidLoad
+            .map {
+                [weak self] _ in
+                guard let self else { return [] } 
+                let items: [CalendarPilsaItem] = calendarUseCase.getCurrentWeekDates().map { CalendarPilsaItem(day: $0, isCompleted: true) }
+                return items
             }
+            .sink { items in
             calendarItemsSubject.send(items)
         }
         .store(in: &cancellables)
