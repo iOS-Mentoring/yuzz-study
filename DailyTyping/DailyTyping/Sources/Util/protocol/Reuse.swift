@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 protocol Reuse: AnyObject {
     static var identifier: String { get }
 }

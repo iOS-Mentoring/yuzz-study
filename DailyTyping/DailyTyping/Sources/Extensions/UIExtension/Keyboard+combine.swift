@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 
+@MainActor
 public protocol CombineKeyboardType {
     var frame: AnyPublisher<CGRect, Never> { get }
     var visibleHeight: AnyPublisher<CGFloat, Never> { get }
@@ -15,6 +16,7 @@ public protocol CombineKeyboardType {
     var isHidden: AnyPublisher<Bool, Never> { get }
 }
 
+@MainActor
 public class CombineKeyboard: NSObject, CombineKeyboardType {
 
     // MARK: Public

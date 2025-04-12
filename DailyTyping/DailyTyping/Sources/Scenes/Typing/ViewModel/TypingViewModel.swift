@@ -75,7 +75,12 @@ final class TypingViewModel: ViewModelType{
                                                         inputAttributedString: AnyPublisher<NSAttributedString, Never>,
                                                         finished: AnyPublisher<PilsaTypingResult, Never>), Never> in
                 guard let self = self else { return Empty().eraseToAnyPublisher() }
-                let output = timerUseCase.startTypingTimer(pilsaInfo: pilsaInfo, inputText: currentTextSubject, every: 1.0, endSeconds: 60)
+                let output = timerUseCase.startTypingTimer(
+                    pilsaInfo: pilsaInfo,
+                    inputText: currentTextSubject,
+                    every: 1.0,
+                    endSeconds: 60
+                )
                 return Just(output).eraseToAnyPublisher()
             }
             .share()

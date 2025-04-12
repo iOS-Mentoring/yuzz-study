@@ -17,7 +17,7 @@ final class HistoryCoordinator: Coordinator {
     }
     
     func start() {
-        let viewModel = HistoryViewModel()
+        let viewModel = HistoryViewModel(calendarUseCase: CalendarUseCaseImpl())
         let historyVC = HistoryViewController(viewModel: viewModel)
         historyVC.coordinator = self
         navigationController.pushViewController(historyVC, animated: true)

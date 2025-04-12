@@ -35,27 +35,32 @@ extension Publishers {
             subscriber.receive(subscription: subscription)
         }
     }
+}
+
+private final class GestureSubscription<S: Subscriber>: Subscription where S.Input == Void, S.Failure == Never {
+    private var subscriber: S?
+    private let gestureRecognizer: UIGestureRecognizer
     
-    private final class GestureSubscription<S: Subscriber>: Subscription where S.Input == Void, S.Failure == Never {
-        private var subscriber: S?
-        private let gestureRecognizer: UIGestureRecognizer
+    init(subscriber: S, gestureRecognizer: UIGestureRecognizer) {
+        self.subscriber = subscriber
+        self.gestureRecognizer = gestureRecognizer
         
-        init(subscriber: S, gestureRecognizer: UIGestureRecognizer) {
-            self.subscriber = subscriber
-            self.gestureRecognizer = gestureRecognizer
+        Task { @MainActor in
             self.gestureRecognizer.addTarget(self, action: #selector(gestureRecognized))
         }
-        
-        func request(_ demand: Subscribers.Demand) {
-            // Demand 처리: 이 경우, 아무것도 하지 않음
-        }
-        
-        func cancel() {
-            subscriber = nil
-        }
-        
-        @objc private func gestureRecognized() {
-            _ = subscriber?.receive(())
-        }
+    }
+    
+    func request(_ demand: Subscribers.Demand) {
+        // Demand 처리: 이 경우, 아무것도 하지 않음
+    }
+    
+    func cancel() {
+        subscriber = nil
+    }
+    
+    @objc private func gestureRecognized() {
+        _ = subscriber?.receive(())
     }
 }
+
+extension GestureSubscription: @unchecked Sendable {}

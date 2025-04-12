@@ -23,12 +23,9 @@ class LinkWebViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        coordinator?.removeCoordinator()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureNavigation()
         bind()
     }
     
@@ -47,5 +44,17 @@ class LinkWebViewController: UIViewController {
             mainView.loadWebView()
         }
         .store(in: &cancellables)
+        
+        mainView.backButton.tapPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                coordinator?.removeCoordinator()
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func configureNavigation() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: mainView.backButton)
     }
 }
