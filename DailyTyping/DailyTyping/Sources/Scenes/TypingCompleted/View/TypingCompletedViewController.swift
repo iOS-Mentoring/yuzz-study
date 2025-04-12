@@ -25,10 +25,6 @@ final class TypingCompletedViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        coordinator?.removeCoordinator()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewDidLoadSubject.send(())

@@ -9,9 +9,18 @@ import UIKit
 import WebKit
 
 final class LinkWebView: BaseView {
+    let backButton: UIButton = {
+        let button = UIButton()
+        var configuration = UIButton.Configuration.plain()
+        configuration.image = .iconLeftArrow.resized(to: CGSize(width: 24, height: 24))
+        button.configuration = configuration
+        
+        return button
+    }()
+    
     private let webView: WKWebView = {
         let webView = WKWebView()
-        webView.backgroundColor = .gray
+        webView.backgroundColor = .inversePrimaryEmphasis
         return webView
     }()
     

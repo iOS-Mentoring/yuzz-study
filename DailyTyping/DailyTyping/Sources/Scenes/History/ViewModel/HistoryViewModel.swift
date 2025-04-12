@@ -20,18 +20,18 @@ final class HistoryViewModel: ViewModelType {
     }
     
     struct Output {
-        let configureDataSource: AnyPublisher<Void, Never>
         let calendarItemPublisher: AnyPublisher<[CalendarPilsaItem], Never>
     }
     
     func transform(input: Input) -> Output {
-        let calendarItemsSubject = CurrentValueSubject<[CalendarPilsaItem], Never>([])
+        let calendarItemsSubject = PassthroughSubject<[CalendarPilsaItem], Never>()
         
         input.viewDidLoad
             .map {
                 [weak self] _ in
                 guard let self else { return [] } 
                 let items: [CalendarPilsaItem] = calendarUseCase.getCurrentWeekDates().map { CalendarPilsaItem(day: $0, isCompleted: true) }
+                print(items)
                 return items
             }
             .sink { items in
@@ -40,7 +40,6 @@ final class HistoryViewModel: ViewModelType {
         .store(in: &cancellables)
         
         return Output(
-            configureDataSource: input.viewDidLoad.eraseToAnyPublisher(),
             calendarItemPublisher: calendarItemsSubject.eraseToAnyPublisher()
         )
     }

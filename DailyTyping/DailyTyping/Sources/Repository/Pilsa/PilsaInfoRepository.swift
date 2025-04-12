@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-protocol PilsaInfoRepository {
+protocol PilsaInfoRepository: Sendable  {
     func fetchPilsaInfo(title: String) async throws -> PilsaInfo
 }
 
@@ -17,7 +17,6 @@ extension PilsaInfoRepository {
         return try await fetchPilsaInfo(title: title)
     }
 }
-
 
 extension PilsaInfoRepository {
     func fetchPilsaInfoPublisher(title: String = TypingLabelText.defaultTitle.rawValue) -> Future<PilsaInfo, Never> {

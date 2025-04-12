@@ -118,7 +118,7 @@ public extension UIView {
 
 public extension UIView {
     private struct AssociatedKeys {
-        static var storedConstraints = "storedConstraints"
+        @MainActor static var storedConstraints = "storedConstraints"
     }
     
     private var storedConstraints: [BaseLayout: NSLayoutConstraint] {

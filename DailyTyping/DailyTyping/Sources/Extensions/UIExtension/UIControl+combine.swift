@@ -28,32 +28,41 @@ extension UIControl {
             subscriber.receive(subscription: subscription)
         }
     }
+}
 
-    // Subscription
-    fileprivate class EventSubscription<EventSubscriber: Subscriber>: Subscription
-    where EventSubscriber.Input == UIControl,
-    EventSubscriber.Failure == Never {
-        let control: UIControl
-        let event: UIControl.Event
-        var subscriber: EventSubscriber?
+// Subscription
+fileprivate class EventSubscription<EventSubscriber: Subscriber>: Subscription
+where EventSubscriber.Input == UIControl,
+EventSubscriber.Failure == Never {
+    let control: UIControl
+    let event: UIControl.Event
+    var subscriber: EventSubscriber?
 
-        init(control: UIControl, subscrier: EventSubscriber, event: UIControl.Event) {
-            self.control = control
-            self.subscriber = subscrier
-            self.event = event
+    init(control: UIControl, subscrier: EventSubscriber, event: UIControl.Event) {
+        self.control = control
+        self.subscriber = subscrier
+        self.event = event
 
+        Task { @MainActor in
             control.addTarget(self, action: #selector(eventDidOccur), for: event)
         }
+    }
 
-        func request(_ demand: Subscribers.Demand) {}
+    func request(_ demand: Subscribers.Demand) {}
 
-        func cancel() {
-            subscriber = nil
-            control.removeTarget(self, action: #selector(eventDidOccur), for: event)
-        }
-
-        @objc func eventDidOccur() {
-            _ = subscriber?.receive(control)
+    func cancel() {
+        subscriber = nil
+        
+        Task {
+            await MainActor.run {
+                self.control.removeTarget(self, action: #selector(self.eventDidOccur), for: self.event)
+            }
         }
     }
+
+    @objc func eventDidOccur() {
+        _ = subscriber?.receive(control)
+    }
 }
+
+extension EventSubscription: @unchecked Sendable {}

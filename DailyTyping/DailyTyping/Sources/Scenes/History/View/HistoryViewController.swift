@@ -30,14 +30,12 @@ final class HistoryViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        coordinator?.removeCoordinator()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewDidLoadSubject.send(())
         configureNavigationItem()
+        configureDataSource()
+        configureSupplementaryViewDataSource()
+        viewDidLoadSubject.send(())
     }
     
     override func loadView() {
@@ -57,14 +55,6 @@ final class HistoryViewController: UIViewController {
             .sink { [weak self] _ in
                 guard let self else { return }
                 coordinator?.removeCoordinator()
-            }
-            .store(in: &cancellables)
-        
-        output.configureDataSource
-            .sink { [weak self] _ in
-                guard let self else { return }
-                configureDataSource()
-                configureSupplementaryViewDataSource()
             }
             .store(in: &cancellables)
         

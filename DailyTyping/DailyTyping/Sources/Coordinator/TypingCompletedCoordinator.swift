@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 final class TypingCompletedCoordinator: Coordinator {
     let navigationController: UINavigationController
     weak var parentCoordinator: Coordinator?

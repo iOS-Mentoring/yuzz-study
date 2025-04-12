@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-protocol FetchPilsaInfoUseCase {
+protocol FetchPilsaInfoUseCase: Sendable {
     func execute(
         title: String
     ) -> Future<PilsaInfo, Never>
@@ -22,7 +22,7 @@ extension FetchPilsaInfoUseCase {
     }
 }
 
-final class DefaultFetchPilsaInfoUseCase: FetchPilsaInfoUseCase {
+final class DefaultFetchPilsaInfoUseCase: FetchPilsaInfoUseCase, @unchecked Sendable {
     private let pilsaInfoRepository: PilsaInfoRepository
     
     init(pilsaInfoRepository: PilsaInfoRepository) {
