@@ -25,8 +25,8 @@ class LinkWebViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigation()
         bind()
+        configureNavigation()
     }
     
     override func loadView() {
