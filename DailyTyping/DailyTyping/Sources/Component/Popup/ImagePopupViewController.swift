@@ -1,5 +1,5 @@
 //
-//  ImageAlertViewController.swift
+//  ImagePopupViewController.swift
 //  DailyTyping
 //
 //  Created by 조유진 on 4/13/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ImageAlertViewController: UIViewController {
+final class ImagePopupViewController: UIViewController {
     private let backgroundStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -95,7 +95,7 @@ final class ImageAlertViewController: UIViewController {
     }
 }
 
-extension ImageAlertViewController {
+extension ImagePopupViewController {
     private func makeBottomButton(title: String, color: UIColor, font: UIFont) -> UIButton {
         let button = UIButton()
         var config = UIButton.Configuration.plain()

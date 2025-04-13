@@ -1,5 +1,5 @@
 //
-//  TitleAlertViewController.swift
+//  TitlePopupViewController.swift
 //  DailyTyping
 //
 //  Created by 조유진 on 4/13/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TitleAlertViewController: UIViewController {
+final class TitlePopupViewController: UIViewController {
     private let backgroundStackView: UIStackView = {
         let view = UIStackView()
         view.backgroundColor = .inversePrimaryEmphasis
@@ -109,7 +109,7 @@ final class TitleAlertViewController: UIViewController {
     }
 }
 
-extension TitleAlertViewController {
+extension TitlePopupViewController {
     private func makeDividerView() -> UIView {
         let view = UIView()
         view.backgroundColor = .gray100
