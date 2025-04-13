@@ -24,6 +24,7 @@ final class LinkWebCoordinator: Coordinator {
     }
     
     func removeCoordinator() {
+        navigationController.popViewController(animated: true)
         parentCoordinator?.removeChildCoordinator(child: self)
     }
 }
