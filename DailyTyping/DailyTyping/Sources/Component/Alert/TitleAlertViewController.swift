@@ -58,13 +58,8 @@ final class TitleAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureHierarchy()
         configureView(title: alertTitle, cancelTitle: cancelTitle, confirmTitle: confirmTitle)
         configureLayout()
-    }
-    
-    private func configureHierarchy() {
-        view.addSubview(backgroundStackView)
     }
     
     private func configureLayout() {
