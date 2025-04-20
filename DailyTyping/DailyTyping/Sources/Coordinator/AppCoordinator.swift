@@ -8,19 +8,25 @@
 import UIKit
 
 final class AppCoordinator: Coordinator {
-    let navigationController: UINavigationController
-    weak var parentCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
+    var router: ViewRouter
+
     
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+    init() {
+        let navigationController = UINavigationController()
+        navigationController.isNavigationBarHidden = true
+        self.router = ViewRouter(navigationController: navigationController)
     }
     
     func start() {
-        let mainCoordinator = MainCoordinator(navigationController: navigationController)
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
+        let sceneDelegate = windowScene.delegate as? SceneDelegate
         
-        mainCoordinator.parentCoordinator = self
+        let mainCoordinator = TabBarCoordinator(router: router)
         childCoordinators.append(mainCoordinator)
         mainCoordinator.start()
+        
+        sceneDelegate?.window?.rootViewController = router.navigationController
+        sceneDelegate?.window?.makeKeyAndVisible()
     }
 }

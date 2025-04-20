@@ -8,23 +8,22 @@
 import UIKit
 
 final class HistoryCoordinator: Coordinator {
-    let navigationController: UINavigationController
-    weak var parentCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
+    var router: ViewRouter
+
     
-    init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
+    init(router: ViewRouter) {
+        self.router = router
     }
     
     func start() {
-        let viewModel = HistoryViewModel(calendarUseCase: CalendarUseCaseImpl())
-        let historyVC = HistoryViewController(viewModel: viewModel)
-        historyVC.coordinator = self
-        navigationController.pushViewController(historyVC, animated: true)
+        if let historyVC = router.navigationController.topViewController as? HistoryViewController {
+            historyVC.coordinator = self
+        }
     }
     
     func removeCoordinator() {
-        navigationController.popViewController(animated: true)
-        parentCoordinator?.removeChildCoordinator(child: self)
+        router.dismiss(animated: true)
+        removeChildCoordinator(self)
     }
 }

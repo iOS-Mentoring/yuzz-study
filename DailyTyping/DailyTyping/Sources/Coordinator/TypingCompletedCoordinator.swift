@@ -9,13 +9,12 @@ import UIKit
 
 @MainActor
 final class TypingCompletedCoordinator: Coordinator {
-    let navigationController: UINavigationController
-    weak var parentCoordinator: Coordinator?
     var childCoordinators: [Coordinator] = []
+    var router: ViewRouter
     private var pilsaTypingResult: PilsaTypingResult
     
-    init(navigationController: UINavigationController, pilsaTypingResult: PilsaTypingResult) {
-        self.navigationController = navigationController
+    init(router: ViewRouter, pilsaTypingResult: PilsaTypingResult) {
+        self.router = router
         self.pilsaTypingResult = pilsaTypingResult
     }
     
@@ -23,11 +22,11 @@ final class TypingCompletedCoordinator: Coordinator {
         let viewModel = TypingCompletedViewModel(pilsaTypingResult: pilsaTypingResult)
         let typingCompletedVC = TypingCompletedViewController(viewModel: viewModel)
         typingCompletedVC.coordinator = self
-        navigationController.pushViewController(typingCompletedVC, animated: false)
+        router.show(typingCompletedVC, style: .modalFullScreen, animated: false)
     }
     
     func removeCoordinator() {
-        navigationController.popViewController(animated: false)
-        parentCoordinator?.removeChildCoordinator(child: self)
+        router.dismiss(animated: true)
+        removeChildCoordinator(self)
     }
 }

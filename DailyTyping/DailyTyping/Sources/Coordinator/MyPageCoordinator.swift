@@ -1,13 +1,13 @@
 //
-//  LinkWebCoordinator.swift
+//  MyPageCoordinator.swift
 //  DailyTyping
 //
-//  Created by 조유진 on 2/12/25.
+//  Created by 조유진 on 4/20/25.
 //
 
 import UIKit
 
-final class LinkWebCoordinator: Coordinator {
+final class MyPageCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     var router: ViewRouter
 
@@ -17,10 +17,9 @@ final class LinkWebCoordinator: Coordinator {
     }
     
     func start() {
-        let viewModel = LinkWebViewModel()
-        let linkWebVC = LinkWebViewController(viewModel: viewModel)
-        linkWebVC.coordinator = self
-        router.show(linkWebVC, style: .push, animated: false)
+        if let myPageVC = router.navigationController.topViewController as? MyPageViewController {
+            myPageVC.coordinator = self
+        }
     }
     
     func removeCoordinator() {

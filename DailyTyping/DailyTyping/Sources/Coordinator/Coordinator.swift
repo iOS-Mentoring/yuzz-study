@@ -9,13 +9,22 @@ import UIKit
 
 @MainActor
 protocol Coordinator: AnyObject {
-    var navigationController: UINavigationController { get }
-    var parentCoordinator: Coordinator? { get set }
     var childCoordinators: [Coordinator] { get set }
+    var router: ViewRouter { get }
+    
+    func start()
 }
 
 extension Coordinator {
-    func removeChildCoordinator(child: Coordinator) {
-        childCoordinators.removeAll { $0 === child }
+    func finish() {
+        childCoordinators.removeAll()
+    }
+    
+    func addChildCoordinator(_ coordinator: Coordinator) {
+        childCoordinators.append(coordinator)
+    }
+    
+    func removeChildCoordinator(_ coordinator: Coordinator) {
+        childCoordinators = childCoordinators.filter { $0 !== coordinator }
     }
 }

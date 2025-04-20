@@ -26,7 +26,6 @@ class LinkWebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
-        configureNavigation()
     }
     
     override func loadView() {
@@ -44,17 +43,9 @@ class LinkWebViewController: UIViewController {
             mainView.loadWebView()
         }
         .store(in: &cancellables)
-        
-        mainView.backButton.tapPublisher
-            .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                coordinator?.removeCoordinator()
-            }
-            .store(in: &cancellables)
     }
     
-    private func configureNavigation() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: mainView.backButton)
+    override func closeButtonTapped() {
+        coordinator?.removeCoordinator()
     }
 }

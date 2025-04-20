@@ -34,15 +34,8 @@ final class SplashViewController: UIViewController {
     }
     
     private func showMainVC() {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-           let sceneDelegate = windowScene.delegate as? SceneDelegate
-        let nav = UINavigationController()
-        let appCoordinator = AppCoordinator(navigationController: nav)
-        self.appCoordinator = appCoordinator
+        let appCoordinator = AppCoordinator()
         appCoordinator.start()
-        
-        sceneDelegate?.window?.rootViewController = nav
-        sceneDelegate?.window?.makeKeyAndVisible()
     }
     
     private func setupLayout() {

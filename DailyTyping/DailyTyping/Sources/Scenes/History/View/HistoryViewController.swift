@@ -69,7 +69,10 @@ final class HistoryViewController: UIViewController {
     private func configureNavigationItem() {
         navigationController?.navigationBar.backgroundColor = .inversePrimaryEmphasis
         navigationItem.titleView = mainView.navigationTitleLabel
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: mainView.backButton)
+    }
+    
+    override func closeButtonTapped() {
+        coordinator?.removeCoordinator()
     }
 }
 

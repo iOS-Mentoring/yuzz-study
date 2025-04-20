@@ -11,7 +11,7 @@ import Combine
 final class TypingViewController: UIViewController {
     private let mainView = TypingView()
     private let viewModel: any ViewModelType
-    var coordinator: MainCoordinator?
+    var coordinator: TypingCoordinator?
     private var cancellables = Set<AnyCancellable>()
     
     private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
@@ -147,6 +147,9 @@ final class TypingViewController: UIViewController {
     
     private func configureNavigationItem() {
         navigationItem.titleView = mainView.navigationTitleLabel
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: mainView.historyButton)
+    }
+    
+    override func closeButtonTapped() {
+        coordinator?.removeCoordinator()
     }
 }

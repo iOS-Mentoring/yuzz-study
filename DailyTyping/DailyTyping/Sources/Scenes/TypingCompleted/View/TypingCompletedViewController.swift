@@ -87,6 +87,9 @@ final class TypingCompletedViewController: UIViewController {
     private func configureNavigationItem() {
         navigationItem.hidesBackButton = true
         navigationController?.navigationBar.backgroundColor = .inversePrimaryEmphasis
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: mainView.closeButton)
+    }
+    
+    override func closeButtonTapped() {
+        coordinator?.removeCoordinator()
     }
 }
