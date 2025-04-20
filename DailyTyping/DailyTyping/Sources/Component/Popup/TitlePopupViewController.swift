@@ -48,7 +48,6 @@ final class TitlePopupViewController: UIViewController {
         self.cancelTitle = cancelTitle
         self.confirmTitle = confirmTitle
         super.init(nibName: nil, bundle: nil)
-
     }
     
     required init?(coder: NSCoder) {

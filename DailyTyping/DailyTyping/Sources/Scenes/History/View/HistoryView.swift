@@ -57,6 +57,7 @@ final class HistoryView: BaseView {
         calendarCollectionView.register(WeekCalendarHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeekCalendarHeaderView.identifier)
         calendarCollectionView.register(WeekDayCollectionViewCell.self, forCellWithReuseIdentifier: WeekDayCollectionViewCell.identifier)
         calendarCollectionView.bounces = false
+        calendarCollectionView.isScrollEnabled = true
     }
 }
 
